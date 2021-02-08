@@ -1,0 +1,10 @@
+repos:
+  type: meta_repo
+  git_org: geometry-labs
+  repo_tree:
+    etl: blockchain-etl/icon-etl
+    filter-registration: icon-filter-registration
+    websocket: kafka-websocket-server
+#    filter-worker:
+#    rest-api:
+#    graphql: http
