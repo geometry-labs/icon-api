@@ -60,6 +60,16 @@ services:
       POSTGRES_PASSWORD: "changethis"
     networks:
       - default
+
+  mongodb:
+    image: mongo
+    ports:
+      - "27017:27017"
+    volumes:
+      - ./mongodb/data/db:/data/db
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: "mongo"
+      MONGO_INITDB_ROOT_PASSWORD: "changethis"
   
   zookeeper:
     image: confluentinc/cp-zookeeper:latest
