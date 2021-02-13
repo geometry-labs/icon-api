@@ -162,3 +162,29 @@ services:
       KAFKA_REST_LISTENERS: 'http://0.0.0.0:8084'
       KAFKA_REST_SCHEMA_REGISTRY_URL: 'http://schemaregistry:8081'
       KAFKA_REST_HOST_NAME: 'rest-proxy'
+
+  kafka-topic-init:
+    image: pranavt61/kafka-topic-init:latest
+    depends_on:
+      - kafka
+      - schemaregistry
+    volumes:
+      - ./kafka-topic-init/:/topics/
+    restart: on-failure
+    environment:
+      KAFKA_URL: 'kafka:9092'
+      KAFKA_SCHEMA_REGISTRY_URL: 'schemaregistry:8081'
+      KAFKA_TOPIC_INIT_TOPICS_PATH: '/topics/topics.json'
+
+  kafka-connect-init:
+    image: pranavt61/kafka-connect-init:latest
+    depends_on:
+      - connect
+    volumes:
+      - ./kafka-connect-init/:/connectors/
+    restart: on-failure
+    environment:
+      KAFKA_CONNECT_URL: "connect:8083"
+      KAFKA_CONNECT_INIT_TIMEOUT: "120"
+      KAFKA_CONNECT_INIT_CONNECTORS_PATH: "/connectors/"
+

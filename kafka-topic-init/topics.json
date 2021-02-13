@@ -1,0 +1,41 @@
+[
+  {
+    "name": "blocks",
+    "num_partitions" : 1
+  },
+  {
+    "name": "transactions",
+    "num_partitions" : 24
+  },
+  {
+    "name": "logs",
+    "num_partitions" : 24
+  },
+  {
+    "name": "event_registrations",
+    "num_partitions" : 1,
+    "schema": {
+      "schemaType": "JSON",
+      "schema": {
+        "title": "event_registrations-value",
+        "type": "object",
+        "properties": {
+            "type": {"type": ["string", "null"]},
+            "from_address": {"type": ["string", "null"]},
+            "to_address": {"type": ["string", "null"]},
+            "value": {"type": ["number", "null"]},
+            "keyword": {"type": ["string", "null"]},
+            "position": {"type": ["integer", "null"]}
+        }
+      }
+    }
+  },
+  {
+    "name": "outputs",
+    "num_partitions" : 1
+  },
+  {
+    "name": "broadcaster_events",
+    "num_partitions" : 1
+  }
+]

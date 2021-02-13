@@ -1,0 +1,15 @@
+{
+  "name": "logs-mongo-sink",
+  "config": {
+    "connector.class": "com.mongodb.kafka.connect.MongoSinkConnector",
+    "key.converter.schemas.enable": "false",
+    "database": "icon",
+    "topics": "logs",
+    "tasks.max": "1",
+    "connection.uri": "mongodb://mongo:changethis@mongodb:27017",
+    "value.converter.schemas.enable": "false",
+    "collection": "logs",
+    "value.converter": "org.apache.kafka.connect.json.JsonConverter",
+    "key.converter": "org.apache.kafka.connect.storage.StringConverter"
+  }
+}
