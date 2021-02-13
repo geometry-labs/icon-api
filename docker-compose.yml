@@ -198,3 +198,27 @@ services:
       KAFKA_CONNECT_INIT_TIMEOUT: "120"
       KAFKA_CONNECT_INIT_CONNECTORS_PATH: "/connectors/"
 
+  icon-rest-api:
+    image: pranavt61/icon-rest-api:latest
+    ports:
+      - "8000:8000"
+    depends_on:
+      - mongodb
+    environment:
+      ICON_REST_API_ENDPOINT_PREFIX: "/api/v1"
+      MONGO_URL: "mongodb:27017"
+      MONGO_USER: "mongo"
+      MONGO_PASS: "changethis"
+
+  kafka-websocket-server:
+    image: pranavt61/kafka-websocket-server:latest
+    ports:
+      - "3000:3000"
+    depends_on:
+      - kafka
+    environment:
+      KAFKA_WEBSOCKET_SERVER_TOPICS: "blocks,transactions,logs"
+      KAFKA_WEBSOCKET_SERVER_BROKER_URL: "kafka:9092"
+      KAFKA_WEBSOCKET_SERVER_PORT: 3000
+
+
