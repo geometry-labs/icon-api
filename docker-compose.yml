@@ -1,0 +1,164 @@
+version: '3'
+
+services:
+  traefik:
+    image: "traefik:v2.4"
+    container_name: "traefik"
+    hostname: "traefik"
+    ports:
+      - "80:80"
+      - "8080:8080"
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock:ro"
+      - "./traefik.yml:/traefik.yml:ro"
+  
+  icon:
+    image: shinyfoil/icon-etl:latest
+    environment:
+      ICONETL_KAFKA_SCHEMA_REGISTRY_URL: "http://schemaregistry:8081"
+    networks:
+      - default
+    command: ["stream", "-o", "kafka:9092", "-s", "30000000"]
+  
+  registration:
+    image: shinyfoil/icon-contract-registration:latest
+    hostname: registration
+    ports:
+      - 8008:80
+    environment:
+      REGISTRATION_KAFKA_SERVER: kafka:9092
+      REGISTRATION_SCHEMA_SERVER: http://schemaregistry:8081
+      REGISTRATION_DB_SERVER: postgres
+      REGISTRATION_DB_USER: admin
+      REGISTRATION_DB_PASSWORD: changethis
+    networks:
+      - default
+  
+  contract-worker:
+    image: shinyfoil/icon-kafka-worker:0.0.1
+    hostname: kakfa-worker
+    environment:
+      CONTRACT_WORKER_KAFKA_SERVER: kafka:29092
+      CONTRACT_WORKER_SCHEMA_SERVER: http://schemaregistry:8081
+      CONTRACT_WORKER_DB_SERVER: postgres
+      CONTRACT_WORKER_DB_USER: admin
+      CONTRACT_WORKER_DB_PASSWORD: changethis
+      CONTRACT_WORKER_OUTPUT_TOPIC: outputs
+      CONTRACT_WORKER_PROCESSING_MODE: contract
+    networks:
+      - default
+  
+  postgres:
+    image: postgres:latest
+    hostname: postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./postgres/data/db:/var/lib/postgresql/data/
+    environment:
+      POSTGRES_USER: "admin"
+      POSTGRES_PASSWORD: "changethis"
+    networks:
+      - default
+  
+  zookeeper:
+    image: confluentinc/cp-zookeeper:latest
+    ports:
+      - "2181:2181"
+    environment:
+      zk_id: "1"
+      ZOOKEEPER_CLIENT_PORT: 2181
+    networks:
+      - default
+  
+  kafka:
+    image: confluentinc/cp-enterprise-kafka:latest
+    hostname: kafka
+    depends_on:
+      - zookeeper
+    ports:
+      - "29092:29092"
+    environment:
+      KAFKA_BROKER_ID: 0
+      KAFKA_ZOOKEEPER_CONNECT: "zookeeper:2181"
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
+      KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092,PLAINTEXT_HOST://10.10.10.128:29092
+      KAFKA_BROKER_RACK: "r1"
+      KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
+      KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_DELETE_TOPIC_ENABLE: "true"
+      KAFKA_AUTO_CREATE_TOPICS_ENABLE: "true"
+      KAFKA_SCHEMA_REGISTRY_URL: "schemaregistry:8081"
+      KAFKA_CONFLUENT_SCHEMA_REGISTRY_URL: "schemaregistry:8081"
+      KAFKA_JMX_PORT: 9991
+      KAFKA_METRIC_REPORTERS: io.confluent.metrics.reporter.ConfluentMetricsReporter
+      KAFKA_CONFLUENT_SUPPORT_CUSTOMER_ID: anonymous
+      KAFKA_CONFLUENT_METRICS_REPORTER_BOOTSTRAP_SERVERS: kafka:9092
+      KAFKA_CONFLUENT_METRICS_REPORTER_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_CONFLUENT_METRICS_ENABLE: 'true'
+      KAFKA_CONFLUENT_SUPPORT_METRICS_ENABLE: 'false'
+  
+  schemaregistry:
+    image: confluentinc/cp-schema-registry:latest
+    hostname: schemaregistry
+    container_name: schemaregistry
+    depends_on:
+      - zookeeper
+      - kafka
+    ports:
+      - "8081:8081"
+    environment:
+      SCHEMA_REGISTRY_HOST_NAME: schemaregistry
+      SCHEMA_REGISTRY_KAFKASTORE_CONNECTION_URL: 'zookeeper:2181'
+      SCHEMA_REGISTRY_ACCESS_CONTROL_ALLOW_ORIGIN: '*'
+      SCHEMA_REGISTRY_ACCESS_CONTROL_ALLOW_METHODS: 'GET,POST,PUT,OPTIONS'
+      SCHEMA_REGISTRY_LISTENERS: "http://0.0.0.0:8081"
+  
+  connect:
+    image: confluentinc/cp-kafka-connect:5.5.3
+    hostname: connect
+    container_name: connect
+    depends_on:
+      - zookeeper
+      - kafka
+      - schemaregistry
+    ports:
+      - "8083:8083"
+    environment:
+      CONNECT_BOOTSTRAP_SERVERS: 'kafka:9092'
+      CONNECT_SCHEMA_REGISTRY_URL: 'http://schemaregistry:8081'
+      CONNECT_REST_ADVERTISED_HOST_NAME: connect
+      CONNECT_REST_PORT: 8083
+      CONNECT_GROUP_ID: compose-connect-group
+      CONNECT_CONFIG_STORAGE_TOPIC: docker-connect-configs
+      CONNECT_CONFIG_STORAGE_REPLICATION_FACTOR: 1
+      CONNECT_OFFSET_STORAGE_TOPIC: docker-connect-offsets
+      CONNECT_OFFSET_STORAGE_REPLICATION_FACTOR: 1
+      CONNECT_STATUS_STORAGE_TOPIC: docker-connect-status
+      CONNECT_STATUS_STORAGE_REPLICATION_FACTOR: 1
+      CONNECT_KEY_CONVERTER: org.apache.kafka.connect.json.JsonConverter
+      CONNECT_KEY_CONVERTER_SCHEMA_REGISTRY_URL: 'http://schemaregistry:8081'
+      CONNECT_VALUE_CONVERTER: org.apache.kafka.connect.json.JsonConverter
+      CONNECT_VALUE_CONVERTER_SCHEMA_REGISTRY_URL: 'http://schemaregistry:8081'
+      CONNECT_INTERNAL_KEY_CONVERTER: org.apache.kafka.connect.json.JsonConverter
+      CONNECT_INTERNAL_VALUE_CONVERTER: org.apache.kafka.connect.json.JsonConverter
+      CONNECT_ZOOKEEPER_CONNECT: 'zookeeper:2181'
+    volumes:
+      - ./connect/jars:/etc/kafka-connect/jars
+  
+  rest-proxy:
+    image: confluentinc/cp-kafka-rest:latest
+    hostname: rest-proxy
+    depends_on:
+      - kafka
+      - schemaregistry
+    ports:
+      - "8084:8084"
+    environment:
+      KAFKA_REST_ZOOKEEPER_CONNECT: 'zookeeper:2181'
+      KAFKA_REST_BOOTSTRAP_SERVERS: 'kafka:9092'
+      KAFKA_REST_LISTENERS: 'http://0.0.0.0:8084'
+      KAFKA_REST_SCHEMA_REGISTRY_URL: 'http://schemaregistry:8081'
+      KAFKA_REST_HOST_NAME: 'rest-proxy'
