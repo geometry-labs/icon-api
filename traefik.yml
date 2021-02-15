@@ -1,0 +1,20 @@
+## STATIC CONFIGURATION
+log:
+  level: INFO
+
+api:
+  # Change to false if using with https/letsencrypt. Otherwise leave as true
+  # PRs welcome for https version!
+  insecure: true
+  # Leave as true if you want to access traefik dashboard on 8080
+  dashboard: true
+
+entryPoints:
+  web:
+    # Again, leave as 80 unless https
+    address: ":80"
+
+providers:
+  docker:
+    endpoint: "unix:///var/run/docker.sock"
+    exposedByDefault: false

@@ -1,9 +1,15 @@
-
+.idea
 .bak
 
-connect-init
-rest-api
-kafka-websocket-server
 etl
 filter-registration
+kafka
 kafka-worker
+websockets/kafka-websocket-server
+websockets/registration-websocket-server
+
+rest-api
+
+# In case use local volumes
+postgres
+mongodb

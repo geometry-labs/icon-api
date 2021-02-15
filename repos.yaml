@@ -3,8 +3,9 @@ repos:
   git_org: geometry-labs
   repo_tree:
     etl: blockchain-etl/icon-etl
-    filter-registration: icon-filter-registration
-    filter-worker: icon-kafka-worker
+    filter:
+      registration: icon-filter-registration
+      worker: icon-kafka-worker
     rest: icon-rest-api
     websockets:
       websocket: kafka-websocket-server

@@ -1,0 +1,32 @@
+version: '3'
+
+services:
+  etl:
+    build:
+      context: etl
+      target: test
+  
+  filter-registration:
+    build:
+      context: filter/registration
+      target: test
+
+  filter-worker:
+    build:
+      context: filter/worker
+      target: test
+
+  rest-api:
+    build:
+      context: rest-api
+      target: test
+
+  kafka-websocket-server:
+    build:
+      context: websockets/kafka-websocket-server
+      target: test
+
+  kafka-registration-websocket-server:
+    build:
+      context: websockets/kafka-registration-websocket-server
+      target: test
