@@ -1,8 +1,9 @@
 
+.bak
 
-connect-sidecar
+connect-init
 rest-api
 kafka-websocket-server
 etl
 filter-registration
-
+kafka-worker
