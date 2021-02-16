@@ -45,7 +45,7 @@ services:
       - "traefik.enable=true"
       - "traefik.http.routers.rest-api.rule=PathPrefix(`/api/v1`)"
   
-  contract-worker:
+  filter-worker:
     # Worker that filters events and sends them to broadcasters
     image: shinyfoil/icon-kafka-worker:0.0.1
     hostname: kakfa-worker
