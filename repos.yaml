@@ -3,8 +3,14 @@ repos:
   git_org: geometry-labs
   repo_tree:
     etl: blockchain-etl/icon-etl
-    filter-registration: icon-filter-registration
-    websocket: kafka-websocket-server
-#    filter-worker:
-#    rest-api:
-#    graphql: http
+    filter:
+      registration: icon-filter-registration
+      worker: icon-kafka-worker
+    rest: icon-rest-api
+    websockets:
+      websocket: kafka-websocket-server
+      registration-websocket: icon-registration-websocket-server
+    graphql: icon-graphql-api
+    kafka:
+      topics-init: kafka-topics-init
+      connect-init: kafka-connect-init

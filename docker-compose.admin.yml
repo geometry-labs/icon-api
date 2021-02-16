@@ -1,0 +1,69 @@
+version: '3'
+
+services:
+  pgadmin:
+    container_name: pgadmin
+    image: dpage/pgadmin4
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=admin@geometry-labs.com
+      - PGADMIN_DEFAULT_PASSWORD=changethis
+    ports:
+      - "5050:80"
+
+  mongodb-compass:
+    image: openkbs/mongo-gui-docker
+    command: /usr/bin/mongodb-compass
+    build:
+      context: ./
+      dockerfile: Dockerfile
+      args:
+        buildno: 1
+    container_name: mongo-gui-docker
+    environment:
+      - USER_ID=${USER_ID:-1000}
+      - GROUP_ID=${GROUP_ID:-1000}
+    volumes:
+      - /tmp/.X11-unix:/tmp/.X11-unix
+      - ./workspace:/home/developer/workspace
+
+  connect-ui:
+    image: landoop/kafka-connect-ui
+    container_name: connect-ui
+    depends_on:
+      - connect
+    ports:
+      - "8001:8000"
+    environment:
+      - "CONNECT_URL=http://connect:8083"
+
+  schema-registry-ui:
+    image: landoop/schema-registry-ui
+    hostname: schema-registry-ui
+    depends_on:
+      - kafka
+      - schemaregistry
+    ports:
+      - "8002:8000"
+    environment:
+      SCHEMAREGISTRY_URL: 'http://schemaregistry:8081'
+
+  control-center:
+    image: confluentinc/cp-enterprise-control-center:5.5.1
+    hostname: control-center
+    depends_on:
+      - zookeeper
+      - kafka
+    ports:
+      - "9021:9021"
+    environment:
+      CONTROL_CENTER_BOOTSTRAP_SERVERS: 'kafka:9092'
+      CONTROL_CENTER_ZOOKEEPER_CONNECT: 'zookeeper:2181'
+      CONTROL_CENTER_REPLICATION_FACTOR: 1
+      CONTROL_CENTER_SCHEMA_REGISTRY_URL: 'schemaregistry:8081'
+      CONTROL_CENTER_INTERNAL_TOPICS_PARTITIONS: 1
+      CONTROL_CENTER_MONITORING_INTERCEPTOR_TOPIC_PARTITIONS: 1
+      CONFLUENT_METRICS_TOPIC_REPLICATION: 1
+      PORT: 9021
+    networks:
+      - default
+    restart: always

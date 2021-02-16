@@ -1,6 +1,13 @@
 version: '3'
 
+volumes:
+  mongodb:
+  postgres:
+
 services:
+  #######
+  # Proxy
+  #######
   traefik:
     image: "traefik:v2.4"
     container_name: "traefik"
@@ -12,15 +19,18 @@ services:
       - "/var/run/docker.sock:/var/run/docker.sock:ro"
       - "./traefik.yml:/traefik.yml:ro"
   
-  icon:
+  ################
+  # ICON Streaming
+  ################
+  etl:
+    # Worker that extracts events off the chain and feeds them to kafka
     image: shinyfoil/icon-etl:latest
     environment:
       ICONETL_KAFKA_SCHEMA_REGISTRY_URL: "http://schemaregistry:8081"
-    networks:
-      - default
-    command: ["stream", "-o", "kafka:9092", "-s", "30000000"]
+    command: ["stream", "-o", "kafka:9092", "-s", "${START_BLOCK:-30000000}"] # TODO: Add latest option in start block
   
   registration:
+    # REST API to register events with broadcasters
     image: shinyfoil/icon-contract-registration:latest
     hostname: registration
     ports:
@@ -28,13 +38,15 @@ services:
     environment:
       REGISTRATION_KAFKA_SERVER: kafka:9092
       REGISTRATION_SCHEMA_SERVER: http://schemaregistry:8081
-      REGISTRATION_DB_SERVER: postgres
+      REGISTRATION_DB_SERVER: ${POSTGRES_HOST:-postgres}
       REGISTRATION_DB_USER: admin
       REGISTRATION_DB_PASSWORD: changethis
-    networks:
-      - default
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.rest-api.rule=PathPrefix(`/api/v1`)"
   
-  contract-worker:
+  filter-worker:
+    # Worker that filters events and sends them to broadcasters
     image: shinyfoil/icon-kafka-worker:0.0.1
     hostname: kakfa-worker
     environment:
@@ -45,49 +57,107 @@ services:
       CONTRACT_WORKER_DB_PASSWORD: changethis
       CONTRACT_WORKER_OUTPUT_TOPIC: outputs
       CONTRACT_WORKER_PROCESSING_MODE: contract
-    networks:
-      - default
   
+  ###########
+  # ICON APIs
+  ###########
+  rest-api:
+    # REST API to serve block data
+    image: geometrylabs/icon-rest-api
+#    ports:
+#      - "8000:8000"
+    depends_on:
+      - mongodb
+    environment:
+      ICON_REST_API_ENDPOINT_PREFIX: "/api/v1"
+      ICON_REST_MONGO_HOST: "mongodb:27017"
+      ICON_REST_MONGO_USERNAME: "mongo"
+      ICON_REST_MONGO_PASSWORD: "changethis"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.rest-api.rule=PathPrefix(`/api/v1`)"
+      
+  kafka-websocket-server:
+    # Websocket endpoints that stream all block, transaction, and event log
+    image: pranavt61/kafka-websocket-server:latest
+#    ports:
+#      - "3000:3000"
+    depends_on:
+      - kafka
+    environment:
+      KAFKA_WEBSOCKET_SERVER_TOPICS: "blocks,transactions,logs"
+      KAFKA_WEBSOCKET_SERVER_BROKER_URL: "kafka:9092"
+      KAFKA_WEBSOCKET_SERVER_PORT: 3000
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.websocket.rule=PathPrefix(`/api/v1`)"
+      - "traefik.webservice.frontend.entryPoints=http,ws"
+      # If enababling https - replace with above
+#      - "traefik.webservice.frontend.entryPoints=http,https,ws,wss"
+
+#  icon-registration-websocket-server:
+#  # Websocket endpoints for creating and getting event registrations
+#    image: geometrylabs/icon-registration-websocket-server:latest
+#    #    ports:
+#    #      - "3001:3001"
+#    depends_on:
+#      - kafka
+#    environment:
+#      KAFKA_WEBSOCKET_SERVER_TOPICS: "blocks,transactions,logs"
+#      KAFKA_WEBSOCKET_SERVER_BROKER_URL: "kafka:9092"
+#      KAFKA_WEBSOCKET_SERVER_PORT: 80
+#    labels:
+#      - "traefik.enable=true"
+#      - "traefik.http.routers.websocket.rule=PathPrefix(`/`)"
+#      - "traefik.webservice.frontend.entryPoints=http,ws"
+#      # If enababling https - replace with above
+#  #      - "traefik.webservice.frontend.entryPoints=http,https,ws,wss"
+
+  ###########
+  # Databases
+  ###########
   postgres:
     image: postgres:latest
     hostname: postgres
-    ports:
-      - "5432:5432"
+#    ports: #TODO
+#      - "5432:5432"
     volumes:
-      - ./postgres/data/db:/var/lib/postgresql/data/
+      - postgres:/var/lib/postgresql/data/
     environment:
       POSTGRES_USER: "admin"
       POSTGRES_PASSWORD: "changethis"
-    networks:
-      - default
 
   mongodb:
     image: mongo
-    ports:
-      - "27017:27017"
+#    ports: #TODO
+#      - "27017:27017"
     volumes:
-      - ./mongodb/data/db:/data/db
+      - mongodb:/data/db
     environment:
       MONGO_INITDB_ROOT_USERNAME: "mongo"
       MONGO_INITDB_ROOT_PASSWORD: "changethis"
   
+  
+  #######
+  # Kafka
+  #######
   zookeeper:
+    # Zookeeper for kafka
     image: confluentinc/cp-zookeeper:latest
-    ports:
-      - "2181:2181"
+#    ports: #TODO
+#      - "2181:2181"
     environment:
       zk_id: "1"
       ZOOKEEPER_CLIENT_PORT: 2181
-    networks:
-      - default
-  
+
   kafka:
+    # Kafka
     image: confluentinc/cp-enterprise-kafka:latest
     hostname: kafka
     depends_on:
       - zookeeper
-    ports:
-      - "29092:29092"
+#    ports: #TODO
+#      - "29092:29092"
     environment:
       KAFKA_BROKER_ID: 0
       KAFKA_ZOOKEEPER_CONNECT: "zookeeper:2181"
@@ -109,24 +179,26 @@ services:
       KAFKA_CONFLUENT_METRICS_REPORTER_ZOOKEEPER_CONNECT: zookeeper:2181
       KAFKA_CONFLUENT_METRICS_ENABLE: 'true'
       KAFKA_CONFLUENT_SUPPORT_METRICS_ENABLE: 'false'
-  
+
   schemaregistry:
+    # Kafka schema registry - used to store schemas for kafka connect
     image: confluentinc/cp-schema-registry:latest
     hostname: schemaregistry
     container_name: schemaregistry
     depends_on:
       - zookeeper
       - kafka
-    ports:
-      - "8081:8081"
+#    ports: #TODO
+#      - "8081:8081"
     environment:
       SCHEMA_REGISTRY_HOST_NAME: schemaregistry
       SCHEMA_REGISTRY_KAFKASTORE_CONNECTION_URL: 'zookeeper:2181'
       SCHEMA_REGISTRY_ACCESS_CONTROL_ALLOW_ORIGIN: '*'
       SCHEMA_REGISTRY_ACCESS_CONTROL_ALLOW_METHODS: 'GET,POST,PUT,OPTIONS'
       SCHEMA_REGISTRY_LISTENERS: "http://0.0.0.0:8081"
-  
+
   connect:
+    # Kafka connect - used to tail data from topics into databases
     image: confluentinc/cp-kafka-connect:5.5.3
     hostname: connect
     container_name: connect
@@ -134,8 +206,8 @@ services:
       - zookeeper
       - kafka
       - schemaregistry
-    ports:
-      - "8083:8083"
+#    ports: #TODO
+#      - "8083:8083"
     environment:
       CONNECT_BOOTSTRAP_SERVERS: 'kafka:9092'
       CONNECT_SCHEMA_REGISTRY_URL: 'http://schemaregistry:8081'
@@ -155,17 +227,19 @@ services:
       CONNECT_INTERNAL_KEY_CONVERTER: org.apache.kafka.connect.json.JsonConverter
       CONNECT_INTERNAL_VALUE_CONVERTER: org.apache.kafka.connect.json.JsonConverter
       CONNECT_ZOOKEEPER_CONNECT: 'zookeeper:2181'
-    volumes:
+    volumes: # TODO: Is this right?
       - ./connect/jars:/etc/kafka-connect/jars
-  
+
+
   rest-proxy:
+    # Kafka REST Proxy to manage kafka
     image: confluentinc/cp-kafka-rest:latest
     hostname: rest-proxy
     depends_on:
       - kafka
       - schemaregistry
-    ports:
-      - "8084:8084"
+#    ports: #TODO
+#      - "8084:8084"
     environment:
       KAFKA_REST_ZOOKEEPER_CONNECT: 'zookeeper:2181'
       KAFKA_REST_BOOTSTRAP_SERVERS: 'kafka:9092'
@@ -173,52 +247,33 @@ services:
       KAFKA_REST_SCHEMA_REGISTRY_URL: 'http://schemaregistry:8081'
       KAFKA_REST_HOST_NAME: 'rest-proxy'
 
+
   kafka-topic-init:
+    # Initialization container for kafka topics
     image: pranavt61/kafka-topic-init:latest
     depends_on:
       - kafka
       - schemaregistry
     volumes:
-      - ./kafka-topic-init/:/topics/
+      - ./kafka/topics/:/topics/
     restart: on-failure
     environment:
       KAFKA_URL: 'kafka:9092'
       KAFKA_SCHEMA_REGISTRY_URL: 'schemaregistry:8081'
       KAFKA_TOPIC_INIT_TOPICS_PATH: '/topics/topics.json'
 
+
   kafka-connect-init:
+    # Initialization container for schema registry topics
     image: pranavt61/kafka-connect-init:latest
     depends_on:
       - connect
     volumes:
-      - ./kafka-connect-init/:/connectors/
+      - ./kafka/connect/:/connectors/
     restart: on-failure
     environment:
       KAFKA_CONNECT_URL: "connect:8083"
       KAFKA_CONNECT_INIT_TIMEOUT: "120"
       KAFKA_CONNECT_INIT_CONNECTORS_PATH: "/connectors/"
-
-  icon-rest-api:
-    image: pranavt61/icon-rest-api:latest
-    ports:
-      - "8000:8000"
-    depends_on:
-      - mongodb
-    environment:
-      ICON_REST_API_ENDPOINT_PREFIX: "/api/v1"
-      MONGO_URL: "mongodb:27017"
-      MONGO_USER: "mongo"
-      MONGO_PASS: "changethis"
-
-  kafka-websocket-server:
-    image: pranavt61/kafka-websocket-server:latest
-    ports:
-      - "3000:3000"
-    depends_on:
-      - kafka
-    environment:
-      KAFKA_WEBSOCKET_SERVER_TOPICS: "blocks,transactions,logs"
-      KAFKA_WEBSOCKET_SERVER_BROKER_URL: "kafka:9092"
-      KAFKA_WEBSOCKET_SERVER_PORT: 3000
 
 

@@ -1,0 +1,36 @@
+## STATIC CONFIGURATION
+log:
+  level: INFO
+
+api:
+  # Change to false if using with https/letsencrypt. Otherwise leave as true
+  # PRs welcome for https version!
+  insecure: true
+  # Leave as true if you want to access traefik dashboard on 8080
+  dashboard: true
+
+entryPoints:
+  web:
+    # Again, leave as 80 unless https
+    address: ":80"
+# # Uncomment to expose metrics to prometheus
+#  metrics:
+#    address: ":8082"
+    
+providers:
+  docker:
+    endpoint: "unix:///var/run/docker.sock"
+    exposedByDefault: false
+
+# # Uncomment to expose metrics to prometheus
+#metrics:
+#  prometheus:
+#    buckets:
+#      - 0.1
+#      - 0.3
+#      - 1.2
+#      - 5.0
+#
+#    addEntryPointsLabels: true
+#    addServicesLabels: true
+#    entryPoint: metrics
