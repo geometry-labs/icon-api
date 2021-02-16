@@ -13,7 +13,7 @@ def test_get_block_latest(get_rest):
 
 
 def test_get_block_by_height(get_rest):
-    r = get_rest('blocks/height/10000000')
+    r = get_rest('blocks/height/30000001')
     assert r.status_code == 200
 
 

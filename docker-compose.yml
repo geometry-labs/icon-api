@@ -38,7 +38,7 @@ services:
     environment:
       REGISTRATION_KAFKA_SERVER: kafka:9092
       REGISTRATION_SCHEMA_SERVER: http://schemaregistry:8081
-      REGISTRATION_DB_SERVER: postgres
+      REGISTRATION_DB_SERVER: ${POSTGRES_HOST:-postgres}
       REGISTRATION_DB_USER: admin
       REGISTRATION_DB_PASSWORD: changethis
     labels:
@@ -77,7 +77,6 @@ services:
       - "traefik.enable=true"
       - "traefik.http.routers.rest-api.rule=PathPrefix(`/api/v1`)"
       
-
   kafka-websocket-server:
     # Websocket endpoints that stream all block, transaction, and event log
     image: pranavt61/kafka-websocket-server:latest
