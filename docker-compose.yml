@@ -69,10 +69,10 @@ services:
     depends_on:
       - mongodb
     environment:
-      ICON_REST_API_ENDPOINT_PREFIX: "/api/v1"
-      ICON_REST_MONGO_HOST: "mongodb:27017"
-      ICON_REST_MONGO_USERNAME: "mongo"
-      ICON_REST_MONGO_PASSWORD: "changethis"
+      ICON_REST_API_PREFIX: "/api/vi"
+      ICON_REST_API_MONGO_HOST: "mongodb:27017"
+      ICON_REST_API_MONGO_USERNAME: "mongo"
+      ICON_REST_API_MONGO_PASSWORD: "changethis"
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.rest-api.rule=PathPrefix(`/api/v1`)"
