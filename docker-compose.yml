@@ -227,7 +227,7 @@ services:
       CONNECT_INTERNAL_KEY_CONVERTER: org.apache.kafka.connect.json.JsonConverter
       CONNECT_INTERNAL_VALUE_CONVERTER: org.apache.kafka.connect.json.JsonConverter
       CONNECT_ZOOKEEPER_CONNECT: 'zookeeper:2181'
-    volumes: # TODO: Is this right?
+    volumes:
       - ./connect/jars:/etc/kafka-connect/jars
 
 
