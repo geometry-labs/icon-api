@@ -31,32 +31,47 @@ services:
   
   registration:
     # REST API to register events with broadcasters
-    image: shinyfoil/icon-contract-registration:latest
+    image: geometrylabs/icon-filter-registration:latest
     hostname: registration
     ports:
       - 8008:80
     environment:
       REGISTRATION_KAFKA_SERVER: kafka:9092
       REGISTRATION_SCHEMA_SERVER: http://schemaregistry:8081
-      REGISTRATION_DB_SERVER: ${POSTGRES_HOST:-postgres}
-      REGISTRATION_DB_USER: admin
-      REGISTRATION_DB_PASSWORD: changethis
+      REGISTRATION_POSTGRES_SERVER: ${POSTGRES_HOST:-postgres}
+      REGISTRATION_POSTGRES_USER: admin
+      REGISTRATION_POSTGRES_PASSWORD: changethis
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.rest-api.rule=PathPrefix(`/api/v1`)"
   
-  filter-worker:
+  filter-worker-contract:
     # Worker that filters events and sends them to broadcasters
-    image: shinyfoil/icon-kafka-worker:0.0.1
-    hostname: kakfa-worker
+    image: geometrylabs/icon-kafka-worker:latest
+    hostname: kakfa-worker-contract
     environment:
       CONTRACT_WORKER_KAFKA_SERVER: kafka:29092
       CONTRACT_WORKER_SCHEMA_SERVER: http://schemaregistry:8081
-      CONTRACT_WORKER_DB_SERVER: postgres
-      CONTRACT_WORKER_DB_USER: admin
-      CONTRACT_WORKER_DB_PASSWORD: changethis
+      CONTRACT_WORKER_CONSUMER_GROUP: filter-worker-contract
+      CONTRACT_WORKER_POSTGRES_SERVER: postgres
+      CONTRACT_WORKER_POSTGRES_USER: admin
+      CONTRACT_WORKER_POSTGRES_PASSWORD: changethis
       CONTRACT_WORKER_OUTPUT_TOPIC: outputs
       CONTRACT_WORKER_PROCESSING_MODE: contract
+
+    filter-worker-transaction:
+    # Worker that filters events and sends them to broadcasters
+    image: geometrylabs/icon-kafka-worker:latest
+    hostname: kakfa-worker-transaction
+    environment:
+      CONTRACT_WORKER_KAFKA_SERVER: kafka:29092
+      CONTRACT_WORKER_SCHEMA_SERVER: http://schemaregistry:8081
+      CONTRACT_WORKER_CONSUMER_GROUP: filter-worker-transaction
+      CONTRACT_WORKER_POSTGRES_SERVER: postgres
+      CONTRACT_WORKER_POSTGRES_USER: admin
+      CONTRACT_WORKER_POSTGRES_PASSWORD: changethis
+      CONTRACT_WORKER_OUTPUT_TOPIC: outputs
+      CONTRACT_WORKER_PROCESSING_MODE: transaction
   
   ###########
   # ICON APIs
