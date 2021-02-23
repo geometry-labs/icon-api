@@ -12,16 +12,16 @@ The stack is modular and can be adopted in whole or in part by disabling various
 
 ### Containers
 
-| Name | 
-| :--- |
-| [etl](https://github.com/geometry-labs/icon-etl) |
-| [registration](https://github.com/geometry-labs/icon-filter-registration) |
-| [filter-worker-contract](https://github.com/geometry-labs/icon-kafka-worker) |
-| [filter-worker-transaction](https://github.com/geometry-labs/icon-kafka-worker) |
-| [rest-api](https://github.com/geometry-labs/icon-rest-api) |
-| [kafka-websocket-server](https://github.com/geometry-labs/kafka-websocket-server) |
-| [kafka-topic-init](https://github.com/geometry-labs/kafka-topics-init) |
-| [kafka-connect-init](https://github.com/geometry-labs/kafka-connect-init) |
+| Name | Description |
+| :--- | :---------- |
+| [etl](https://github.com/geometry-labs/icon-etl) | Icon etl to scan the blockchain and pipe data to kafka brokers |
+| [registration](https://github.com/geometry-labs/icon-filter-registration) | Rest api to register contracts and transactions to track |
+| [filter-worker-contract](https://github.com/geometry-labs/icon-kafka-worker) | Filter worker for contracts |
+| [filter-worker-transaction](https://github.com/geometry-labs/icon-kafka-worker) | Filter worker for transactions | 
+| [rest-api](https://github.com/geometry-labs/icon-rest-api) | Rest api to retrieve historical icon blockchain data |
+| [kafka-websocket-server](https://github.com/geometry-labs/kafka-websocket-server) | Websocket server to stream live data for blocks, transactions, and contract logs |
+| [kafka-topic-init](https://github.com/geometry-labs/kafka-topics-init) | Kafka topic initialization container, exit 0 after completion |
+| [kafka-connect-init](https://github.com/geometry-labs/kafka-connect-init) | Kafka contract initialization container, exit 0 after completion |
 
 
 ### Requirements 
