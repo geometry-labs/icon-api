@@ -24,10 +24,10 @@ services:
   ################
   etl:
     # Worker that extracts events off the chain and feeds them to kafka
-    image: shinyfoil/icon-etl:dev
+    image: geometrylabs/iconetl:latest
     environment:
       ICONETL_KAFKA_SCHEMA_REGISTRY_URL: "http://schemaregistry:8081"
-    command: ["stream", "-o", "kafka:9092", "-s", "${START_BLOCK:-30000000}"] # TODO: Add latest option in start block
+    command: ["stream", "-o", "kafka:9092", "--start-at-head", "true", "--period-seconds", "1"]
   
   registration:
     # REST API to register events with broadcasters
