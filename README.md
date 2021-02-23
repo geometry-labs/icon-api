@@ -10,6 +10,20 @@ The stack is modular and can be adopted in whole or in part by disabling various
 | :--- | :--- | :--- |  
 | REST API | /api/v1/ | /api/v1/docs | 
 
+### Containers
+
+| Name | 
+| :--- |
+| [etl](https://github.com/geometry-labs/icon-etl) |
+| [registration](https://github.com/geometry-labs/icon-filter-registration) |
+| [filter-worker-contract](https://github.com/geometry-labs/icon-kafka-worker) |
+| [filter-worker-transaction](https://github.com/geometry-labs/icon-kafka-worker) |
+| [rest-api](https://github.com/geometry-labs/icon-rest-api) |
+| [kafka-websocket-server](https://github.com/geometry-labs/kafka-websocket-server) |
+| [kafka-topic-init](https://github.com/geometry-labs/kafka-topics-init) |
+| [kafka-connect-init](https://github.com/geometry-labs/kafka-connect-init) |
+
+
 ### Requirements 
 
 Minimum:
