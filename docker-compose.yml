@@ -28,6 +28,7 @@ services:
     environment:
       ICONETL_KAFKA_SCHEMA_REGISTRY_URL: "http://schemaregistry:8081"
     command: ["stream", "-o", "kafka:9092", "--start-at-head", "true", "--period-seconds", "1"]
+    restart: on-failure
   
   registration:
     # REST API to register events with broadcasters
@@ -134,7 +135,7 @@ services:
   postgres:
     image: postgres:latest
     hostname: postgres
-    ports: #TODO
+    ports:
       - "5432:5432"
     volumes:
       - postgres:/var/lib/postgresql/data/
@@ -290,5 +291,3 @@ services:
       KAFKA_CONNECT_URL: "connect:8083"
       KAFKA_CONNECT_INIT_TIMEOUT: "120"
       KAFKA_CONNECT_INIT_CONNECTORS_PATH: "/connectors/"
-
-
