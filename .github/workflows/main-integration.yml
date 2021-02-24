@@ -35,7 +35,7 @@ jobs:
           python -m pip install tackle-box
 
       - name: Clone repos
-        run: tackle . --context-file repos.yml --no-input
+        run: tackle . --context-file repos.yaml --no-input
 
       - name: Set up Docker Buildx
         id: buildx
