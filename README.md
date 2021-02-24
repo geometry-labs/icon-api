@@ -15,12 +15,12 @@ For historical queries, data is moved by means of Kafka Connect into MongoDB fro
 For websockets, data is streamed directly from kafka. 
 The services are packaged with docker-compose with a [Traefik](https://doc.traefik.io/traefik/) reverse proxy.  
 
-<!---
+
 ### Endpoints 
 | Name | Endpoint Prefix |  Docs | 
 | :--- | :--- | :--- |  
-| REST API | /api/v1/ | /api/v1/docs | 
---->
+| REST API | /api/v1/ | /api/v1/docs |
+| Registration API | /api/v1/admin | /api/v1/admin/docs |
 
 ### Containers
 
