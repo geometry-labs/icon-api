@@ -18,15 +18,15 @@ services:
 
   rest-api:
     build:
-      context: rest-api
+      context: rest
       target: test
 
   kafka-websocket-server:
     build:
-      context: websockets/kafka-websocket-server
+      context: websockets/websocket
       target: test
 
   kafka-registration-websocket-server:
     build:
-      context: websockets/kafka-registration-websocket-server
+      context: websockets/registration-websocket
       target: test
