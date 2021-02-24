@@ -15,8 +15,8 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
-      - name: Install setuptools
-        run: pip3 install setuptools
+      - name: Install setup prerequisites
+        run: pip3 install setuptools wheel
 
       - run: |
           pip3 install tackle-box
