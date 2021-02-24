@@ -11,8 +11,6 @@ on:
 jobs:
   docker:
     runs-on: ubuntu-latest
-    env:
-      SETUPTOOLS_USE_DISTUTILS: stdlib
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -22,13 +20,13 @@ jobs:
         uses: docker/setup-buildx-action@v1
 
       - name: Build the stack
-        run: docker-compose -f docker-compose.yml -f docker-compose.test.yml up -d
+        run: docker-compose -f docker-compose.yml -f docker-compose.unit.yml up -d
 
       - name: Check running containers
-        run: docker-compose -f docker-compose.yml -f docker-compose.test.yml ps
+        run: docker-compose -f docker-compose.yml -f docker-compose.unit.yml ps
 
       - name: Check logs
-        run: docker-compose -f docker-compose.yml -f docker-compose.test.yml logs rest
+        run: docker-compose -f docker-compose.yml -f docker-compose.unit.yml logs rest
 
       - name: Run test suite
-        run: docker-compose -f docker-compose.yml -f docker-compose.test.yml run rest pytest
+        run: docker-compose -f docker-compose.yml -f docker-compose.unit.yml run rest pytest

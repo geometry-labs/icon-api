@@ -11,11 +11,12 @@ on:
 jobs:
   docker:
     runs-on: ubuntu-latest
-    env:
-      SETUPTOOLS_USE_DISTUTILS: stdlib
     steps:
       - name: Checkout
         uses: actions/checkout@v2
+
+      - name: Install setuptools
+        run: pip3 install setuptools
 
       - run: |
           pip3 install tackle-box
