@@ -32,7 +32,7 @@ services:
   
   registration:
     # REST API to register events with broadcasters
-    image: geometrylabs/icon-filter-registration:v0.0.1
+    image: geometrylabs/icon-filter-registration:latest
     hostname: registration
     ports:
       - 8008:80
