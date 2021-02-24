@@ -15,11 +15,12 @@ For historical queries, data is moved by means of Kafka Connect into MongoDB fro
 For websockets, data is streamed directly from kafka. 
 The services are packaged with docker-compose with a [Traefik](https://doc.traefik.io/traefik/) reverse proxy.  
 
-### Endpoints 
 
+### Endpoints 
 | Name | Endpoint Prefix |  Docs | 
 | :--- | :--- | :--- |  
-| REST API | /api/v1/ | /api/v1/docs | 
+| REST API | /api/v1/ | /api/v1/docs |
+| Registration API | /api/v1/admin | /api/v1/admin/docs |
 
 ### Containers
 
@@ -58,8 +59,7 @@ docker-compose up -d
 This repo is actually a meta-repo consisting of many sub-repos. To pull all the source code into the project, run:
 ```shell script
 pip3 install tackle-box 
-tackle . --context-file repos.yaml
-# Follow prompts to pull sub-repos 
+tackle . --context-file repos.yaml --no-input 
 ```
 
 To run the development version, run the docker-compose with the `docker-compose.dev.yml` to override the images with local builds of the containers like so. 

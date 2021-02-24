@@ -44,7 +44,7 @@ services:
       ICON_REGISTRATION_POSTGRES_PASSWORD: changethis
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.rest-api.rule=PathPrefix(`/api/v1`)"
+      - "traefik.http.routers.rest-api.rule=PathPrefix(`/api/v1/admin`)"
   
   filter-worker-contract:
     # Worker that filters events and sends them to broadcasters
