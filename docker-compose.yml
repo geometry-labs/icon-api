@@ -25,8 +25,8 @@ services:
   etl:
     # Worker that extracts events off the chain and feeds them to kafka
     image: geometrylabs/iconetl:latest
-    environment:
-      ICONETL_KAFKA_SCHEMA_REGISTRY_URL: "http://schemaregistry:8081"
+    #environment:
+      #ICONETL_KAFKA_SCHEMA_REGISTRY_URL: "http://schemaregistry:8081"
     command: ["stream", "-o", "kafka:9092", "--start-at-head", "true", "--period-seconds", "1"]
     restart: on-failure
   
@@ -34,8 +34,8 @@ services:
     # REST API to register events with broadcasters
     image: geometrylabs/icon-filter-registration:latest
     hostname: registration
-    ports:
-      - 8008:80
+#    ports:
+#      - 8008:80
     environment:
       ICON_REGISTRATION_KAFKA_SERVER: kafka:9092
       ICON_REGISTRATION_SCHEMA_SERVER: http://schemaregistry:8081
@@ -44,7 +44,8 @@ services:
       ICON_REGISTRATION_POSTGRES_PASSWORD: changethis
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.rest-api.rule=PathPrefix(`/api/v1/admin`)"
+      - "traefik.http.routers.registration-api.rule=PathPrefix(`/api/v1/admin`)"
+      - "traefik.port=80"
   
   filter-worker-contract:
     # Worker that filters events and sends them to broadcasters
@@ -85,19 +86,20 @@ services:
     depends_on:
       - mongodb
     environment:
-      ICON_REST_API_PREFIX: "/api/vi"
+      ICON_REST_API_PREFIX: "/api/v1"
       ICON_REST_API_MONGO_HOST: "mongodb:27017"
       ICON_REST_API_MONGO_USERNAME: "mongo"
       ICON_REST_API_MONGO_PASSWORD: "changethis"
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.rest-api.rule=PathPrefix(`/api/v1`)"
+      - "traefik.port=80"
       
   kafka-websocket-server:
     # Websocket endpoints that stream all block, transaction, and event log
-    image: geometrylabs/kafka-websocket-server:v0.1.1
-#    ports:
-#      - "3000:3000"
+    image: geometrylabs/kafka-websocket-server:latest
+    ports:
+      - "3000:3000"
     depends_on:
       - kafka
     environment:
@@ -106,9 +108,10 @@ services:
       KAFKA_WEBSOCKET_SERVER_PORT: 3000
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.websocket.rule=PathPrefix(`/api/v1`)"
+      - "traefik.http.routers.websocket.rule=PathPrefix(`/ws/api/v1`)"
       - "traefik.webservice.frontend.entryPoints=http,ws"
-      # If enababling https - replace with above
+      - "traefik.port=3000"
+      # If enabling https - replace with above
 #      - "traefik.webservice.frontend.entryPoints=http,https,ws,wss"
 
 #  icon-registration-websocket-server:
@@ -145,8 +148,8 @@ services:
 
   mongodb:
     image: mongo
-#    ports: #TODO
-#      - "27017:27017"
+    ports: #TODO
+      - "27017:27017"
     volumes:
       - mongodb:/data/db
     environment:

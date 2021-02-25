@@ -11,15 +11,31 @@ on:
 jobs:
   docker:
     runs-on: ubuntu-latest
-    env:
-      SETUPTOOLS_USE_DISTUTILS: stdlib
     steps:
       - name: Checkout
         uses: actions/checkout@v2
 
-      - run: |
-          pip3 install tackle-box
-          tackle . --context-file repos.yml --no-input
+      - name: Setup Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.x'
+
+      - name: Cache pip
+        uses: actions/cache@v2
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-${{ hashFiles('requirements_dev.txt') }}
+          restore-keys: |
+            ${{ runner.os }}-pip-
+            ${{ runner.os }}-
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip setuptools wheel
+          python -m pip install -r requirements_dev.txt
+
+      - name: Clone repos
+        run: tackle . --context-file repos.yaml --no-input
 
       - name: Set up Docker Buildx
         id: buildx
@@ -33,5 +49,5 @@ jobs:
 
       - name: Run test suite
         run: |
-          sleep 60
+          sleep 120
           python -m pytest tests

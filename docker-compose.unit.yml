@@ -6,27 +6,32 @@ services:
       context: etl
       target: test
   
-  filter-registration:
+  registration:
     build:
       context: filter/registration
       target: test
 
-  filter-worker:
+  filter-worker-contract:
+    build:
+      context: filter/worker
+      target: test
+
+  filter-worker-transaction:
     build:
       context: filter/worker
       target: test
 
   rest-api:
     build:
-      context: rest-api
+      context: rest
       target: test
 
   kafka-websocket-server:
     build:
-      context: websockets/kafka-websocket-server
+      context: websockets/websocket
       target: test
 
-  kafka-registration-websocket-server:
-    build:
-      context: websockets/kafka-registration-websocket-server
-      target: test
+#  kafka-registration-websocket-server:
+#    build:
+#      context: websockets/registration-websocket
+#      target: test
