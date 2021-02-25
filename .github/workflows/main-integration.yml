@@ -49,5 +49,5 @@ jobs:
 
       - name: Run test suite
         run: |
-          sleep 180
+          sleep 120
           python -m pytest tests

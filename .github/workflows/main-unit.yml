@@ -44,11 +44,13 @@ jobs:
       - name: Build the stack
         run: docker-compose -f docker-compose.yml -f docker-compose.unit.yml up -d
 
-      - name: Check running containers
-        run: docker-compose -f docker-compose.yml -f docker-compose.unit.yml ps
+      - name: Wait to stabilize and check running containers
+        run: |
+          sleep 120
+          docker-compose -f docker-compose.yml -f docker-compose.unit.yml ps
 
       - name: Check logs
-        run: docker-compose -f docker-compose.yml -f docker-compose.unit.yml logs rest
+        run: docker-compose -f docker-compose.yml -f docker-compose.unit.yml logs rest-api
 
       - name: Run test suite
-        run: docker-compose -f docker-compose.yml -f docker-compose.unit.yml run rest pytest
+        run: docker-compose -f docker-compose.yml -f docker-compose.unit.yml run rest-api pytest
