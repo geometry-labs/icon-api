@@ -1,7 +1,7 @@
 
-def test_get_events_by_tx(get_rest):
-    r = get_rest('events/tx_hash/0xd007cf25e28a98066f27a6ea113e41c34a3deaf91a1e17456949714997f9e642')
-    assert r.status_code == 200
+# def test_get_events_by_tx(get_rest):
+#     r = get_rest('events/tx_hash/0xd007cf25e28a98066f27a6ea113e41c34a3deaf91a1e17456949714997f9e642')
+#     assert r.status_code == 200
 
 # def test_get_events_by_tx():
 #     url = (
@@ -25,9 +25,9 @@ def test_get_events_latest_block(get_rest):
 #     assert response.status_code == 200
 
 
-def test_get_events_by_height(get_rest):
-    r = get_rest('tx/block/10000000')
-    assert r.status_code == 200
+# def test_get_events_by_height(get_rest):
+#     r = get_rest('tx/block/10000000')
+#     assert r.status_code == 200
 
 
 # def test_get_events_by_height():
