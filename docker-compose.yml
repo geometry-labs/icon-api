@@ -95,7 +95,7 @@ services:
       
   kafka-websocket-server:
     # Websocket endpoints that stream all block, transaction, and event log
-    image: pranavt61/kafka-websocket-server:latest
+    image: geometrylabs/kafka-websocket-server:v0.1.1
 #    ports:
 #      - "3000:3000"
     depends_on:
@@ -266,7 +266,7 @@ services:
 
   kafka-topic-init:
     # Initialization container for kafka topics
-    image: pranavt61/kafka-topic-init:latest
+    image: geometrylabs/kafka-topics-init:v0.1.1
     depends_on:
       - kafka
       - schemaregistry
@@ -281,7 +281,7 @@ services:
 
   kafka-connect-init:
     # Initialization container for schema registry topics
-    image: pranavt61/kafka-connect-init:latest
+    image: geometrylabs/kafka-connect-init:v0.1.1
     depends_on:
       - connect
     volumes:
