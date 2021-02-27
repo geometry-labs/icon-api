@@ -14,3 +14,5 @@ repos:
     kafka:
       topics-init: kafka-topics-init
       connect-init: kafka-connect-init
+    terraform:
+      terraform-icon-aws-api-ec2: terraform-icon-aws-api-ec2

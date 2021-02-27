@@ -7,7 +7,7 @@ kafka
 rest-api
 websockets/kafka-websocket-server
 websockets/registration-websocket-server
-
+terraform/terraform-icon-aws-api-ec2
 
 # In case use local volumes
 postgres
