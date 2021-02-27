@@ -1,0 +1,24 @@
+version: '3'
+
+
+volumes:
+  mongodb:
+    driver: local
+  postgres:
+    driver: local
+  zookeeper-data:
+    driver: local
+  zookeeper-log:
+    driver: local
+  kafka-data:
+    driver: local
+
+services:
+  zookeeper:
+    volumes:
+      - zookeeper-data:/var/lib/zookeeper/data
+      - zookeeper-log:/var/lib/zookeeper/log
+  
+  kafka:
+    volumes:
+      - kafka-data:/var/lib/kafka/data

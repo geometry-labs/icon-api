@@ -25,17 +25,21 @@ services:
   etl:
     # Worker that extracts events off the chain and feeds them to kafka
     image: geometrylabs/iconetl:${ICON_ETL_TAG:-latest}
-    #environment:
-      #ICONETL_KAFKA_SCHEMA_REGISTRY_URL: "http://schemaregistry:8081"
-    command: ["stream", "-o", "kafka:9092", "--start-at-head", "true", "--period-seconds", "1"]
+#    environment:
+    #ICONETL_KAFKA_SCHEMA_REGISTRY_URL: "http://schemaregistry:8081"
+    command: [
+      "stream",
+      "-o", "kafka:9092",
+      "--start-at-head", "${START_AT_HEAD:-true}",
+#      "--start-block", "${START_BLOCK:-0}"  # Either start at head or at block, not both
+      "--period-seconds", "1",
+    ]
     restart: on-failure
   
   registration:
     # REST API to register events with broadcasters
     image: geometrylabs/icon-filter-registration:latest
     hostname: registration
-#    ports:
-#      - 8008:80
     environment:
       ICON_REGISTRATION_KAFKA_SERVER: kafka:9092
       ICON_REGISTRATION_SCHEMA_SERVER: http://schemaregistry:8081
@@ -60,7 +64,7 @@ services:
       CONTRACT_WORKER_POSTGRES_PASSWORD: changethis
       CONTRACT_WORKER_OUTPUT_TOPIC: outputs
       CONTRACT_WORKER_PROCESSING_MODE: contract
-
+  
   filter-worker-transaction:
     # Worker that filters events and sends them to broadcasters
     image: geometrylabs/icon-kafka-worker:${ICON_KAFKA_WORKER_TAG:-latest}
@@ -81,8 +85,6 @@ services:
   rest-api:
     # REST API to serve block data
     image: geometrylabs/icon-rest-api:${ICON_REST_API_TAG:-latest}
-#    ports:
-#      - "8000:8000"
     depends_on:
       - mongodb
     environment:
@@ -94,7 +96,7 @@ services:
       - "traefik.enable=true"
       - "traefik.http.routers.rest-api.rule=PathPrefix(`/api/v1`)"
       - "traefik.port=80"
-      
+  
   kafka-websocket-server:
     # Websocket endpoints that stream all block, transaction, and event log
     image: geometrylabs/kafka-websocket-server:${KAFKA_WEBSOCKET_SERVER_TAG:-latest}
@@ -112,26 +114,26 @@ services:
       - "traefik.webservice.frontend.entryPoints=http,ws"
       - "traefik.port=3000"
       # If enabling https - replace with above
-#      - "traefik.webservice.frontend.entryPoints=http,https,ws,wss"
-
-#  icon-registration-websocket-server:
-#  # Websocket endpoints for creating and getting event registrations
-#    image: geometrylabs/icon-registration-websocket-server:latest
-#    #    ports:
-#    #      - "3001:3001"
-#    depends_on:
-#      - kafka
-#    environment:
-#      KAFKA_WEBSOCKET_SERVER_TOPICS: "blocks,transactions,logs"
-#      KAFKA_WEBSOCKET_SERVER_BROKER_URL: "kafka:9092"
-#      KAFKA_WEBSOCKET_SERVER_PORT: 80
-#    labels:
-#      - "traefik.enable=true"
-#      - "traefik.http.routers.websocket.rule=PathPrefix(`/`)"
-#      - "traefik.webservice.frontend.entryPoints=http,ws"
-#      # If enababling https - replace with above
-#  #      - "traefik.webservice.frontend.entryPoints=http,https,ws,wss"
-
+  #      - "traefik.webservice.frontend.entryPoints=http,https,ws,wss"
+  
+  #  icon-registration-websocket-server:
+  #  # Websocket endpoints for creating and getting event registrations
+  #    image: geometrylabs/icon-registration-websocket-server:latest
+  #    #    ports:
+  #    #      - "3001:3001"
+  #    depends_on:
+  #      - kafka
+  #    environment:
+  #      KAFKA_WEBSOCKET_SERVER_TOPICS: "blocks,transactions,logs"
+  #      KAFKA_WEBSOCKET_SERVER_BROKER_URL: "kafka:9092"
+  #      KAFKA_WEBSOCKET_SERVER_PORT: 80
+  #    labels:
+  #      - "traefik.enable=true"
+  #      - "traefik.http.routers.websocket.rule=PathPrefix(`/`)"
+  #      - "traefik.webservice.frontend.entryPoints=http,ws"
+  #      # If enababling https - replace with above
+  #  #      - "traefik.webservice.frontend.entryPoints=http,https,ws,wss"
+  
   ###########
   # Databases
   ###########
@@ -145,7 +147,7 @@ services:
     environment:
       POSTGRES_USER: "admin"
       POSTGRES_PASSWORD: "changethis"
-
+  
   mongodb:
     image: mongo
     ports: #TODO
@@ -163,20 +165,17 @@ services:
   zookeeper:
     # Zookeeper for kafka
     image: confluentinc/cp-zookeeper:${CP_ZOOKEEPER_TAG:-latest}
-#    ports: #TODO
-#      - "2181:2181"
+    hostname: zookeeper
     environment:
       zk_id: "1"
       ZOOKEEPER_CLIENT_PORT: 2181
-
+  
   kafka:
     # Kafka
     image: confluentinc/cp-enterprise-kafka:${CP_ENTERPRISE_KAFKA_TAG:-latest}
     hostname: kafka
     depends_on:
       - zookeeper
-#    ports: #TODO
-#      - "29092:29092"
     environment:
       KAFKA_BROKER_ID: 0
       KAFKA_ZOOKEEPER_CONNECT: "zookeeper:2181"
@@ -198,7 +197,7 @@ services:
       KAFKA_CONFLUENT_METRICS_REPORTER_ZOOKEEPER_CONNECT: zookeeper:2181
       KAFKA_CONFLUENT_METRICS_ENABLE: 'true'
       KAFKA_CONFLUENT_SUPPORT_METRICS_ENABLE: 'false'
-
+  
   schemaregistry:
     # Kafka schema registry - used to store schemas for kafka connect
     image: confluentinc/cp-schema-registry:${CP_SCHEMA_REGISTRY_TAG:-latest}
@@ -207,15 +206,15 @@ services:
     depends_on:
       - zookeeper
       - kafka
-#    ports: #TODO
-#      - "8081:8081"
+    #    ports: #TODO
+    #      - "8081:8081"
     environment:
       SCHEMA_REGISTRY_HOST_NAME: schemaregistry
       SCHEMA_REGISTRY_KAFKASTORE_CONNECTION_URL: 'zookeeper:2181'
       SCHEMA_REGISTRY_ACCESS_CONTROL_ALLOW_ORIGIN: '*'
       SCHEMA_REGISTRY_ACCESS_CONTROL_ALLOW_METHODS: 'GET,POST,PUT,OPTIONS'
       SCHEMA_REGISTRY_LISTENERS: "http://0.0.0.0:8081"
-
+  
   connect:
     # Kafka connect - used to tail data from topics into databases
     image: confluentinc/cp-kafka-connect:${CP_KAFKA_CONNECT_TAG:-5.5.3}
@@ -225,8 +224,8 @@ services:
       - zookeeper
       - kafka
       - schemaregistry
-#    ports: #TODO
-#      - "8083:8083"
+    #    ports: #TODO
+    #      - "8083:8083"
     environment:
       CONNECT_BOOTSTRAP_SERVERS: 'kafka:9092'
       CONNECT_SCHEMA_REGISTRY_URL: 'http://schemaregistry:8081'
@@ -248,8 +247,8 @@ services:
       CONNECT_ZOOKEEPER_CONNECT: 'zookeeper:2181'
     volumes:
       - ./connect/jars:/etc/kafka-connect/jars
-
-
+  
+  
   rest-proxy:
     # Kafka REST Proxy to manage kafka
     image: confluentinc/cp-kafka-rest:${CP_KAFKA_REST_TAG:-latest}
@@ -257,16 +256,16 @@ services:
     depends_on:
       - kafka
       - schemaregistry
-#    ports: #TODO
-#      - "8084:8084"
+    #    ports: #TODO
+    #      - "8084:8084"
     environment:
       KAFKA_REST_ZOOKEEPER_CONNECT: 'zookeeper:2181'
       KAFKA_REST_BOOTSTRAP_SERVERS: 'kafka:9092'
       KAFKA_REST_LISTENERS: 'http://0.0.0.0:8084'
       KAFKA_REST_SCHEMA_REGISTRY_URL: 'http://schemaregistry:8081'
       KAFKA_REST_HOST_NAME: 'rest-proxy'
-
-
+  
+  
   kafka-topic-init:
     # Initialization container for kafka topics
     image: geometrylabs/kafka-topics-init:${KAFKA_TOPIC_INIT_TAG:-latest}
@@ -280,8 +279,8 @@ services:
       KAFKA_URL: 'kafka:9092'
       KAFKA_SCHEMA_REGISTRY_URL: 'schemaregistry:8081'
       KAFKA_TOPIC_INIT_TOPICS_PATH: '/topics/topics.json'
-
-
+  
+  
   kafka-connect-init:
     # Initialization container for schema registry topics
     image: geometrylabs/kafka-connect-init:${KAFKA_CONNECT_INIT_TAG:-latest}
