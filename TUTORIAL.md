@@ -98,6 +98,50 @@ All associated events, once registered, will output to the output topic and will
 ### Receiving events
 #### Websockets
 
+In order to recieve filtered transactions and log events through a websocket, open a websocket connection on _/ws/admin_.
+Once successfully connected, send your filter settings through the same websocket connection.
+The payload should ne in the form of:
+
+```json
+{
+    "connection_type": "ws",
+    "endpoint": "wss://test",
+    "event_ids": [
+      "1234-1234-1234"
+    ],
+    "transaction_events": [
+        {
+            "to_address": "cx0000000000000000000000000000000000000000",
+            "from_address": "cx0000000000000000000000000000000000000001"
+        }
+    ],
+    "log_events": [
+        {
+            "address": "cx0000000000000000000000000000000000000001",
+            "keyword": "LogKeyword",
+            "position": 1
+        }
+    ]
+}
+```
+
+If the filter registration was successful, the server will respond on the same websocket with your broadcaster_id.
+The websocket will start streaming the filtered transactions and log events.
+
+```json
+{
+  "broadcaster_id": "2b90ec6e-716f-4cae-a7b6-6800424607da"
+}
+```
+
+If the filter registration was unsuccessful, the server will respond on the same websocket with an error.
+
+```json
+{
+  "error": "failed to register"
+}
+```
+
 #### Kafka
 
 Filtered events are produced to the output topic (default: _outputs_).
