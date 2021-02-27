@@ -24,7 +24,7 @@ services:
   ################
   etl:
     # Worker that extracts events off the chain and feeds them to kafka
-    image: geometrylabs/iconetl:latest
+    image: geometrylabs/iconetl:${ICON_ETL_TAG:-latest}
     #environment:
       #ICONETL_KAFKA_SCHEMA_REGISTRY_URL: "http://schemaregistry:8081"
     command: ["stream", "-o", "kafka:9092", "--start-at-head", "true", "--period-seconds", "1"]
@@ -49,7 +49,7 @@ services:
   
   filter-worker-contract:
     # Worker that filters events and sends them to broadcasters
-    image: geometrylabs/icon-kafka-worker:latest
+    image: geometrylabs/icon-kafka-worker:${ICON_KAFKA_WORKER_TAG:-latest}
     hostname: kakfa-worker-contract
     restart: always
     environment:
@@ -64,7 +64,7 @@ services:
 
   filter-worker-transaction:
     # Worker that filters events and sends them to broadcasters
-    image: geometrylabs/icon-kafka-worker:latest
+    image: geometrylabs/icon-kafka-worker:${ICON_KAFKA_WORKER_TAG:-latest}
     hostname: kakfa-worker-transaction
     restart: always
     environment:
@@ -82,7 +82,7 @@ services:
   ###########
   rest-api:
     # REST API to serve block data
-    image: geometrylabs/icon-rest-api
+    image: geometrylabs/icon-rest-api:${ICON_REST_API_TAG:-latest}
 #    ports:
 #      - "8000:8000"
     depends_on:
@@ -99,11 +99,10 @@ services:
       
   kafka-websocket-server:
     # Websocket endpoints that stream all block, transaction, and event log
-    image: geometrylabs/kafka-websocket-server:latest
+
+    image: geometrylabs/kafka-websocket-server:${KAFKA_WEBSOCKET_SERVER_TAG:-latest}
     expose:
       - 3000
-#    ports:
-#      - "3000:3000"
     depends_on:
       - kafka
     environment:
@@ -173,7 +172,7 @@ services:
   #######
   zookeeper:
     # Zookeeper for kafka
-    image: confluentinc/cp-zookeeper:latest
+    image: confluentinc/cp-zookeeper:${CP_ZOOKEEPER_TAG:-latest}
 #    ports: #TODO
 #      - "2181:2181"
     environment:
@@ -182,7 +181,7 @@ services:
 
   kafka:
     # Kafka
-    image: confluentinc/cp-enterprise-kafka:latest
+    image: confluentinc/cp-enterprise-kafka:${CP_ENTERPRISE_KAFKA_TAG:-latest}
     hostname: kafka
     depends_on:
       - zookeeper
@@ -212,7 +211,7 @@ services:
 
   schemaregistry:
     # Kafka schema registry - used to store schemas for kafka connect
-    image: confluentinc/cp-schema-registry:latest
+    image: confluentinc/cp-schema-registry:${CP_SCHEMA_REGISTRY_TAG:-latest}
     hostname: schemaregistry
     container_name: schemaregistry
     depends_on:
@@ -229,7 +228,7 @@ services:
 
   connect:
     # Kafka connect - used to tail data from topics into databases
-    image: confluentinc/cp-kafka-connect:5.5.3
+    image: confluentinc/cp-kafka-connect:${CP_KAFKA_CONNECT_TAG:-5.5.3}
     hostname: connect
     container_name: connect
     depends_on:
@@ -263,7 +262,7 @@ services:
 
   rest-proxy:
     # Kafka REST Proxy to manage kafka
-    image: confluentinc/cp-kafka-rest:latest
+    image: confluentinc/cp-kafka-rest:${CP_KAFKA_REST_TAG:-latest}
     hostname: rest-proxy
     depends_on:
       - kafka
@@ -280,7 +279,7 @@ services:
 
   kafka-topic-init:
     # Initialization container for kafka topics
-    image: geometrylabs/kafka-topics-init:v0.1.1
+    image: geometrylabs/kafka-topics-init:${KAFKA_TOPIC_INIT_TAG:-latest}
     depends_on:
       - kafka
       - schemaregistry
@@ -295,7 +294,7 @@ services:
 
   kafka-connect-init:
     # Initialization container for schema registry topics
-    image: geometrylabs/kafka-connect-init:v0.1.1
+    image: geometrylabs/kafka-connect-init:${KAFKA_CONNECT_INIT_TAG:-latest}
     depends_on:
       - connect
     volumes:
