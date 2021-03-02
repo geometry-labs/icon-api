@@ -28,7 +28,7 @@ There are three types of objects you can register to the ICON API:
 * Log events
 * Broadcasters
 
-### Transactions
+#### Transactions
 
 Transactions can be filtered based on the to or from addresses.
 To register a new transaction event, make a POST request to the _/transaction/register_ endpoint.
@@ -46,7 +46,7 @@ If you want to register multiple related objects, submit them as a broadcaster o
 
 Filtered transactions will be output directly to the output topic for further consumption.
 
-### Log Events
+#### Log Events
 
 Log events are combinations of contract addresses, log output keywords, and log output positions.
 To register a new log event, make a POST request to the _/logevent/register_ endpoint.
@@ -62,7 +62,7 @@ The payload should be in the form of:
 
 Log events are extracted from the block log and are reformatted and output to the output topic for further consumption.
 
-### Broadcaster
+#### Broadcaster
 
 Broadcasters are sets of associated transaction and log events.
 Normally these do not need to be manually registered, as the websocket server will take care of this step.
@@ -142,11 +142,54 @@ If the filter registration was unsuccessful, the server will respond on the same
 }
 ```
 
+```json
+{
+  "broadcaster_id": "2b90ec6e-716f-4cae-a7b6-6800424607da"
+}
+```
+
+If the filter registration was unsuccessful, the server will respond on the same websocket with an error.
+
+```json
+{
+  "error": "failed to register"
+}
+```
+
 #### Kafka
 
 Filtered events are produced to the output topic (default: _outputs_).
 Messages are keyed with the _to_address_ associated with the event, and have any associated _broadcaster_id_ included for filtering.
 Messages that are time-sensitive should be consumed directly from the output topic and sent for further processing, as there may be additional delays/connectivity issues associated with websockets.
+
+### Historical Data
+
+Accessing historical icon blockchain data is made easy through the REST GraphQL APIs.
+
+#### REST API
+
+The REST API can be accessed through curl commands (or any other http client)
+
+```bash
+curl -X GET "http://localhost/api/v1/blocks/?skip=0&limit=1" -H  "accept: application/json"
+```
+
+> All endpoints that return arrays have a `skip` and `limit` parameter
+
+| Path | Description | Response Type |
+|------|-------------|---------------|
+| /api/v1/blocks | `GET` latest blocks | array |
+| /api/v1/blocks/height/{height} | `GET` block by height | object |
+| /api/v1/blocks/hash/{hash} | `GET` block by hash | object |
+| /api/v1/tx/hash/{hash} | `GET` transaction by hash | object |
+| /api/v1/tx/address/{address} | `GET` transaction by from address | array |
+| /api/v1/tx/block | `GET` transactions in the latest blocks | array |
+| /api/v1/tx/block/{height} | `GET` transactions by block height | array |
+| /api/v1/events/tx/{hash} | `GET` event logs by from_address | array |
+| /api/v1/events/block | `GET` event logs in the latest blocks | array |
+| /api/v1/events/block/{height} | `GET` event logs by block height | array |
+
+The github repository for the REST API can be found [here](https://github.com/geometry-labs/icon-rest-api).
 
 ### Unregistering Events
 
