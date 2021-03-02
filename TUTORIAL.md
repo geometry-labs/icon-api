@@ -210,6 +210,8 @@ query Block {
 }
 ```
 
+The github repository for the Graphql API can be found [here](https://github.com/geometry-labs/icon-graphql-api).
+
 ##### Schemas
 
 Blocks:
@@ -267,3 +269,7 @@ Logs:
 | transaction_index| Int | False |
 | type| String | False |
 | item_timestamp| String | False |
+
+
+
+
