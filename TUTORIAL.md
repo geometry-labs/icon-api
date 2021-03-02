@@ -2,10 +2,6 @@
 
 In this tutorial we will walk through the various elements of deploying and using the icon-api stack. You can run the stack locally or use the provided terraform module to deploy a node on AWS. From there, we will go over how to access the individual enpoints using Websockets, REST, and GraphQL. 
 
-### Overview of ICON API 
-
-TODO
-
 ### Pre-Requisites for Tutorial 
 
 - curl 
@@ -17,7 +13,9 @@ For Deploying with Terraform
 
 ### Deploying
 
-The stack can be deployed on your own machine with docker-compose or via Terraform. To deploy with Terraform, navigate to [github.com/geometry-labs/terraform-icon-aws-api-ec2](https://github.com/geometry-labs/terraform-icon-aws-api-ec2). From there you can navigate to the examples/defaults and edit parameters based on the parameters described in the README to deploy a larger instance or customize other parameters.  You will need local ssh keys (ie ssh-keygen) and the deployment will require paths to both the public and private keys. To run the deployment, run `terraform init && terraform apply`.  You will then be asked to fill in the paths to the ssh keys which you can also hardcode into the `example/defaults/main.tf`. 
+The stack can be deployed on your own machine with docker-compose or via Terraform on AWS. It can be run to sync up the backend from any given blockheight which, if you are running from genesis, will require up to 300 GB of disk space.  If running from the current blockheight (icon-etl flag `--start-at-head", "${START_AT_HEAD:-true}` per the docker-compose.yml), then you you will need to allocate about 2 GB per week that you intend on running the node. 
+
+To deploy with Terraform, navigate to [github.com/geometry-labs/terraform-icon-aws-api-ec2](https://github.com/geometry-labs/terraform-icon-aws-api-ec2). From there you can navigate to the examples/defaults and edit parameters based on the README values. Some values like key locations can be persisted in a `terraform.tfvars` per it's [example](https://github.com/geometry-labs/terraform-icon-aws-api-ec2/blob/main/examples/defaults/terraform.tfvars.example).  You will need local ssh keys (ie ssh-keygen) and the deployment will require paths to both the public and private keys. To run the deployment, run `terraform init && terraform apply`.  You will then be asked to fill in the paths to the ssh keys unless you setup the terraform.tfvars file. 
 
 Once the node is deployed, ssh into it and start the application manually just as you would if you were running the stack locally. There is also an option to run with SSL but that is out of scope of this tutorial. 
 
