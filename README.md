@@ -20,7 +20,7 @@ For websockets, data is streamed directly from kafka.  The services are deployed
 
 ### Containers
 
-| Name | Description |
+| Name | Description | 
 | :--- | :---------- |
 | [etl](https://github.com/geometry-labs/icon-etl) | Icon etl to scan the blockchain and pipe data to kafka brokers |
 | [registration](https://github.com/geometry-labs/icon-filter-registration) | Rest api to register contracts and transactions to track |
