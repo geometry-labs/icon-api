@@ -14,6 +14,10 @@ docs/_build
 postgres
 mongodb
 
+# Docs
+docs/openapi.rest.json
+docs/openapi.registration.json
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]

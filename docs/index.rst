@@ -11,6 +11,7 @@ Welcome to icon-api's documentation!
    :caption: Readme:
 
    README.md
+   rest-api
 
 
 .. toctree::
@@ -18,7 +19,6 @@ Welcome to icon-api's documentation!
    :caption: Tutorial:
 
    TUTORIAL.md
-
 
 
 

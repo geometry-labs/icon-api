@@ -28,6 +28,7 @@ author = 'Geometry Labs, Inc.'
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
 extensions = [
+    'sphinxcontrib.openapi',
     'recommonmark'
 ]
 
