@@ -46,7 +46,7 @@ jobs:
 
       - name: Wait to stabilize and check running containers
         run: |
-          sleep 120
+          sleep 240
           docker-compose -f docker-compose.yml -f docker-compose.unit.yml ps
 
       - name: Check logs
