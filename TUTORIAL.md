@@ -196,7 +196,7 @@ The github repository for the REST API can be found [here](https://github.com/ge
 
 #### Graphql API
 
-The Graphql API can be accesses through the Graphql Playground located at `/graph/` (or any other graphql client)
+The Graphql API can be accessed through the Graphql Playground located at `/graph/` (or any other graphql client)
 
 Example Graphql query made to `/graph/query`:
 ```
@@ -270,6 +270,97 @@ Logs:
 | type| String | False |
 | item_timestamp| String | False |
 
+### Websocket Data Streaming
 
+Blockchain data can be streamed via a websocket connection. Just open up a websocket connection to one of three endpoints to start streaming
 
+The github repository for the Websocket API can be found [here](https://github.com/geometry-labs/kafka-websocket-server).
+
+/ws/blocks
+```json
+{
+  "type": "block",
+  "number": 31248024,
+  "hash": "8abec43285d347c943ef287ab1677338e058b7b6f31eb6039464d94a51a584ed",
+  "parent_hash": "7233045d2e84ea1a1694dd9a22ba34508ec1ca6c9fc8569f3c6570794c2ae0dd",
+  "merkle_root_hash": "a4484c1a6a3d06a2eaf9abfeaeb8f5e39dba1f8d9ff3ed82790f4a885da5c043",
+  "timestamp": 1614666626727336,
+  "version": "0.5",
+  "transaction_count": 2,
+  "peer_id": "hx81719dcfe8f58ca07044b7bede49cecd61f9bd3f",
+  "signature": "FHrmre9ijL7H+/N9F/cf4buxZHVgoH7e32iVzvxL7Lc8Ps8NWBiEAjnt2+n+FyHZJ9Ub7b+tZwCU10EHauuFBgE=",
+  "next_leader": "hx81719dcfe8f58ca07044b7bede49cecd61f9bd3f",
+  "item_id": "block_8abec43285d347c943ef287ab1677338e058b7b6f31eb6039464d94a51a584ed",
+  "item_timestamp": "2021-03-02T06:30:26Z"
+}
+```
+
+/ws/transactions
+```json
+{
+  "type": "transaction",
+  "version": "0x3",
+  "from_address": null,
+  "to_address": null,
+  "value": 0,
+  "step_limit": null,
+  "timestamp": "0x5bc87e2eb1bbf",
+  "block_timestamp": 1614666697219007,
+  "nid": null,
+  "nonce": null,
+  "hash": "0xf93fff92e4ed528cf47d54e570e196ac0baf93700ed4ab8d4f270759946304b6",
+  "transaction_index": 0,
+  "block_hash": "e7d7343a5eb509e8513308ec1c384f054ebb6071292f8af182bf17b03a559b4d",
+  "block_number": 31248059,
+  "fee": null,
+  "signature": null,
+  "data_type": "base",
+  "data": {
+    "prep": {
+      "irep": "0x21e19e0c9bab2400000",
+      "rrep": "0x181",
+      "totalDelegation": "0x1214a2763e44ace3832b64a",
+      "value": "0x2a93c85453d83fb3"
+    },
+    "result": {
+      "coveredByFee": "0x0",
+      "coveredByOverIssuedICX": "0x0",
+      "issue": "0x2a93c85453d83fb3"
+    }
+  },
+  "receipt_cumulative_step_used": 0,
+  "receipt_step_used": 0,
+  "receipt_step_price": 0,
+  "receipt_score_address": null,
+  "receipt_logs": null,
+  "receipt_status": 1,
+  "item_id": "transaction_0xf93fff92e4ed528cf47d54e570e196ac0baf93700ed4ab8d4f270759946304b6",
+  "item_timestamp": "2021-03-02T06:31:37Z"
+}
+```
+
+/ws/logs
+```json
+{
+  "type": "log",
+  "log_index": 0,
+  "transaction_hash": "0x6426cb215a5125cdeebe80a0922d4fd51b906d543133f6d66f8c7530c83c63c8",
+  "transaction_index": 0,
+  "address": "cx0000000000000000000000000000000000000000",
+  "data": [
+    "0x21e19e0c9bab2400000",
+    "0x181",
+    "0x1214a2763e44ace3832b64a",
+    "0x2a93c85453d83fb3"
+  ],
+  "indexed": [
+    "PRepIssued(int,int,int,int)"
+  ],
+  "block_number": 31248075,
+  "block_timestamp": 1614666729418470,
+  "block_hash": "2337742853924bbbe6e53210d1186d380ad2db2b71e77108481aa82135762963",
+  "item_id": "log_0x6426cb215a5125cdeebe80a0922d4fd51b906d543133f6d66f8c7530c83c63c8_0",
+  "item_timestamp": "2021-03-02T06:32:09Z"
+}
+```
 
