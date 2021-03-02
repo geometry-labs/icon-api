@@ -122,7 +122,7 @@ services:
 
   icon-registration-websocket-server:
   # Websocket endpoints for creating and getting event registrations
-    image: geometrylabs/icon-registration-websocket-server:latest
+    image: geometrylabs/icon-registration-websocket-server:${ICON_REGISTRATION_WEBSOCKET_SERVER_TAG:-latest}
     expose:
       - 3001
     depends_on:
