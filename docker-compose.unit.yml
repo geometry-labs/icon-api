@@ -26,12 +26,18 @@ services:
       context: rest
       target: test
 
+  icon-graphql-api:
+    build:
+      context: graphql
+      target: test
+
   kafka-websocket-server:
     build:
       context: websockets/websocket
       target: test
 
-#  kafka-registration-websocket-server:
-#    build:
-#      context: websockets/registration-websocket
-#      target: test
+  icon-registration-websocket-server:
+    build:
+      context: websockets/registration-websocket
+      target: test
+

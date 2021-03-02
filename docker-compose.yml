@@ -102,8 +102,8 @@ services:
   icon-graphql-api:
     # Graphql API to serve blockchain data
     image: geometrylabs/icon-graphql-api:${ICON_GRAPHQL_API_TAG:-latest}
-    ports:
-      - "8003:8003"
+    expose:
+      - 8003
     depends_on:
       - mongodb
     environment:
@@ -112,7 +112,11 @@ services:
       ICON_GRAPHQL_API_MONGODB_PASS: "changethis"
       ICON_GRAPHQL_API_PORT: "8003"
       ICON_GRAPHQL_API_PREFIX: "/graph/v1"
-  
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.graphql-api.rule=PathPrefix(`/graph/v1`)"
+      - "traefik.port=8003"
+
   kafka-websocket-server:
     # Websocket endpoints that stream all block, transaction, and event log
 
