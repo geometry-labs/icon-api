@@ -189,6 +189,81 @@ curl -X GET "http://localhost/api/v1/blocks/?skip=0&limit=1" -H  "accept: applic
 
 The github repository for the REST API can be found [here](https://github.com/geometry-labs/icon-rest-api).
 
+#### Graphql API
+
+The Graphql API can be accesses through the Graphql Playground located at `/graph/` (or any other graphql client)
+
+Example Graphql query made to `/graph/query`:
+```
+query Block {
+  block(hash: "202d264fb85603ab19f747a60c0cf1aac53b6a15d9567ce7c8bd5e015c023296") {
+    hash,
+    number,
+    transaction_count,
+    peer_id
+  }
+}
+```
+
+##### Schemas
+
+Blocks:
+| Field | Type | Parameter |
+|------|-------------|---------|
+| hash | String | True |
+| number | Int | False |
+| signature | String | False |
+| item_id | String | False |
+| transaction_count | Int | False |
+| type | String | False |
+| version | String | False |
+| peer_id | String | False |
+| merkle_root_hash | String | False |
+| item_timestamp | String | False |
+| parent_hash | String | False |
+| timestamp | Int | False |
+
+Transactions:
+| Field | Type | Filterable |
+|------|-------------|---------|
+| hash | String | True |
+| signature | String | False |
+| fee | Int | False |
+| block_number | Int | False |
+| transaction_index | Int | False |
+| type | String | False |
+| receipt_step_price | Int | False |
+| from_address | String | False |
+| value | Int | False |
+| timestamp | String | False |
+| receipt_status | Int | False |
+| item_id | String | False |
+| receipt_logs | String | False |
+| block_hash | String | False |
+| to_address | String | False |
+| version | String | False |
+| nonce | Int | False |
+| receipt_cumulative_step_used | Int | False |
+| receipt_score_address | String | False |
+| data_type | String | False |
+| item_timestamp | String | False |
+
+Logs:
+| Field | Type | Filterable |
+|------|-------------|---------|
+| transaction_hash| String | True |
+| address| String | False |
+| data| [String] | False |
+| indexed| [String] | False |
+| item_id| String | False |
+| block_timestamp| Int | False |
+| block_number| Int | False |
+| block_hash| String | False |
+| transaction_index| Int | False |
+| type| String | False |
+| item_timestamp| String | False |
+
+
 ### Unregistering Events
 
 Events can be easily unregistered by sending a POST request to the appropriate _/unregister_ endpoint with the same object that was used to register, except now including the associated ID.
