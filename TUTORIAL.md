@@ -215,6 +215,7 @@ The github repository for the Graphql API can be found [here](https://github.com
 ##### Schemas
 
 Blocks:
+
 | Field | Type | Parameter |
 |------|-------------|---------|
 | hash | String | True |
@@ -231,6 +232,7 @@ Blocks:
 | timestamp | Int | False |
 
 Transactions:
+
 | Field | Type | Filterable |
 |------|-------------|---------|
 | hash | String | True |
@@ -256,6 +258,7 @@ Transactions:
 | item_timestamp | String | False |
 
 Logs:
+
 | Field | Type | Filterable |
 |------|-------------|---------|
 | transaction_hash| String | True |

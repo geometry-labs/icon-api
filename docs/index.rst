@@ -12,6 +12,7 @@ Welcome to icon-api's documentation!
 
    README.md
    rest-api
+   registration-rest-api
 
 
 .. toctree::
