@@ -4,6 +4,8 @@ on:
   push:
     branches:
       - main
+      - tutorial
+
 jobs:
   build:
     name: Push Sphinx Pages
