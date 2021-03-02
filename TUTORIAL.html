@@ -1,0 +1,584 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>Using ICON API &mdash; icon-api  documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="REST API OpenAPI Docs" href="rest-api.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> icon-api
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Readme:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="README.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="README.html#endpoints">Endpoints</a></li>
+<li class="toctree-l1"><a class="reference internal" href="README.html#containers">Containers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="README.html#requirements">Requirements</a></li>
+<li class="toctree-l1"><a class="reference internal" href="README.html#usage">Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="README.html#development">Development</a></li>
+<li class="toctree-l1"><a class="reference internal" href="rest-api.html">REST API OpenAPI Docs</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Tutorial:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Using ICON API</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#pre-requisites-for-tutorial">Pre-Requisites for Tutorial</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#deploying">Deploying</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#registering-events">Registering events</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#transactions">Transactions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#log-events">Log Events</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#broadcaster">Broadcaster</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#receiving-events">Receiving events</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#websockets">Websockets</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#kafka">Kafka</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#unregistering-events">Unregistering Events</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#historical-data">Historical Data</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#rest-api">REST API</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#graphql-api">Graphql API</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#schemas">Schemas</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#websocket-data-streaming">Websocket Data Streaming</a></li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">icon-api</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>Using ICON API</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="_sources/TUTORIAL.md.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="using-icon-api">
+<h1>Using ICON API<a class="headerlink" href="#using-icon-api" title="Permalink to this headline">¶</a></h1>
+<p>In this tutorial we will walk through the various elements of deploying and using the icon-api stack. You can run the stack locally or use the provided terraform module to deploy a node on AWS. From there, we will go over how to access the individual enpoints using Websockets, REST, and GraphQL.</p>
+<div class="section" id="pre-requisites-for-tutorial">
+<h2>Pre-Requisites for Tutorial<a class="headerlink" href="#pre-requisites-for-tutorial" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p>curl</p></li>
+<li><p>…</p></li>
+</ul>
+<p>For Deploying with Terraform</p>
+<ul class="simple">
+<li><p>terraform</p></li>
+<li><p>ansible</p></li>
+</ul>
+</div>
+<div class="section" id="deploying">
+<h2>Deploying<a class="headerlink" href="#deploying" title="Permalink to this headline">¶</a></h2>
+<p>The stack can be deployed on your own machine with docker-compose or via Terraform on AWS. It can be run to sync up the backend from any given blockheight which, if you are running from genesis, will require up to 300 GB of disk space.  If running from the current blockheight (icon-etl flag <code class="docutils literal notranslate"><span class="pre">--start-at-head&quot;,</span> <span class="pre">&quot;${START_AT_HEAD:-true}</span></code> per the docker-compose.yml), then you you will need to allocate about 2 GB per week that you intend on running the node.</p>
+<p>To deploy with Terraform, navigate to <a class="reference external" href="https://github.com/geometry-labs/terraform-icon-aws-api-ec2">github.com/geometry-labs/terraform-icon-aws-api-ec2</a>. From there you can navigate to the examples/defaults and edit parameters based on the README values. Some values like key locations can be persisted in a <code class="docutils literal notranslate"><span class="pre">terraform.tfvars</span></code> per it’s <a class="reference external" href="https://github.com/geometry-labs/terraform-icon-aws-api-ec2/blob/main/examples/defaults/terraform.tfvars.example">example</a>.  You will need local ssh keys (ie ssh-keygen) and the deployment will require paths to both the public and private keys. To run the deployment, run <code class="docutils literal notranslate"><span class="pre">terraform</span> <span class="pre">init</span> <span class="pre">&amp;&amp;</span> <span class="pre">terraform</span> <span class="pre">apply</span></code>.  You will then be asked to fill in the paths to the ssh keys unless you setup the terraform.tfvars file.</p>
+<p>Once the node is deployed, ssh into it and start the application manually just as you would if you were running the stack locally. There is also an option to run with SSL but that is out of scope of this tutorial.</p>
+</div>
+<div class="section" id="registering-events">
+<h2>Registering events<a class="headerlink" href="#registering-events" title="Permalink to this headline">¶</a></h2>
+<p>There are three types of objects you can register to the ICON API:</p>
+<ul class="simple">
+<li><p>Transactions</p></li>
+<li><p>Log events</p></li>
+<li><p>Broadcasters</p></li>
+</ul>
+<div class="section" id="transactions">
+<h3>Transactions<a class="headerlink" href="#transactions" title="Permalink to this headline">¶</a></h3>
+<p>Transactions can be filtered based on the to or from addresses.
+To register a new transaction event, make a POST request to the <em>/transaction/register</em> endpoint.
+The payload should be in the form of:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="nt">&quot;to_address&quot;</span><span class="p">:</span> <span class="s2">&quot;cx0000000000000000000000000000000000000000&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;from_address&quot;</span><span class="p">:</span> <span class="s2">&quot;cx0000000000000000000000000000000000000001&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Individual registrations must be sent separately.
+If you want to register multiple related objects, submit them as a broadcaster object.</p>
+<p>Filtered transactions will be output directly to the output topic for further consumption.</p>
+</div>
+<div class="section" id="log-events">
+<h3>Log Events<a class="headerlink" href="#log-events" title="Permalink to this headline">¶</a></h3>
+<p>Log events are combinations of contract addresses, log output keywords, and log output positions.
+To register a new log event, make a POST request to the <em>/logevent/register</em> endpoint.
+The payload should be in the form of:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="nt">&quot;address&quot;</span><span class="p">:</span> <span class="s2">&quot;cx0000000000000000000000000000000000000001&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;keyword&quot;</span><span class="p">:</span> <span class="s2">&quot;LogKeyword&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;position&quot;</span><span class="p">:</span> <span class="mi">1</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Log events are extracted from the block log and are reformatted and output to the output topic for further consumption.</p>
+</div>
+<div class="section" id="broadcaster">
+<h3>Broadcaster<a class="headerlink" href="#broadcaster" title="Permalink to this headline">¶</a></h3>
+<p>Broadcasters are sets of associated transaction and log events.
+Normally these do not need to be manually registered, as the websocket server will take care of this step.</p>
+<p>To register a broadcaster, make a POST request to the <em>/broadcaster/register</em> endpoint.
+The payload should be in the form of:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="nt">&quot;connection_type&quot;</span><span class="p">:</span> <span class="s2">&quot;ws&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;endpoint&quot;</span><span class="p">:</span> <span class="s2">&quot;wss://test&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;event_ids&quot;</span><span class="p">:</span> <span class="p">[</span>
+      <span class="s2">&quot;1234-1234-1234&quot;</span>
+    <span class="p">],</span>
+    <span class="nt">&quot;transaction_events&quot;</span><span class="p">:</span> <span class="p">[</span>
+        <span class="p">{</span>
+            <span class="nt">&quot;to_address&quot;</span><span class="p">:</span> <span class="s2">&quot;cx0000000000000000000000000000000000000000&quot;</span><span class="p">,</span>
+            <span class="nt">&quot;from_address&quot;</span><span class="p">:</span> <span class="s2">&quot;cx0000000000000000000000000000000000000001&quot;</span>
+        <span class="p">}</span>
+    <span class="p">],</span>
+    <span class="nt">&quot;log_events&quot;</span><span class="p">:</span> <span class="p">[</span>
+        <span class="p">{</span>
+            <span class="nt">&quot;address&quot;</span><span class="p">:</span> <span class="s2">&quot;cx0000000000000000000000000000000000000001&quot;</span><span class="p">,</span>
+            <span class="nt">&quot;keyword&quot;</span><span class="p">:</span> <span class="s2">&quot;LogKeyword&quot;</span><span class="p">,</span>
+            <span class="nt">&quot;position&quot;</span><span class="p">:</span> <span class="mi">1</span>
+        <span class="p">}</span>
+    <span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>All associated events, once registered, will output to the output topic and will have the broadcaster_id associated with the message key for output filtering.</p>
+</div>
+</div>
+<div class="section" id="receiving-events">
+<h2>Receiving events<a class="headerlink" href="#receiving-events" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="websockets">
+<h3>Websockets<a class="headerlink" href="#websockets" title="Permalink to this headline">¶</a></h3>
+<p>In order to recieve filtered transactions and log events through a websocket, open a websocket connection on <em>/ws/admin</em>.
+Once successfully connected, send your filter settings through the same websocket connection.
+The payload should ne in the form of:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="nt">&quot;connection_type&quot;</span><span class="p">:</span> <span class="s2">&quot;ws&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;endpoint&quot;</span><span class="p">:</span> <span class="s2">&quot;wss://test&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;event_ids&quot;</span><span class="p">:</span> <span class="p">[</span>
+      <span class="s2">&quot;1234-1234-1234&quot;</span>
+    <span class="p">],</span>
+    <span class="nt">&quot;transaction_events&quot;</span><span class="p">:</span> <span class="p">[</span>
+        <span class="p">{</span>
+            <span class="nt">&quot;to_address&quot;</span><span class="p">:</span> <span class="s2">&quot;cx0000000000000000000000000000000000000000&quot;</span><span class="p">,</span>
+            <span class="nt">&quot;from_address&quot;</span><span class="p">:</span> <span class="s2">&quot;cx0000000000000000000000000000000000000001&quot;</span>
+        <span class="p">}</span>
+    <span class="p">],</span>
+    <span class="nt">&quot;log_events&quot;</span><span class="p">:</span> <span class="p">[</span>
+        <span class="p">{</span>
+            <span class="nt">&quot;address&quot;</span><span class="p">:</span> <span class="s2">&quot;cx0000000000000000000000000000000000000001&quot;</span><span class="p">,</span>
+            <span class="nt">&quot;keyword&quot;</span><span class="p">:</span> <span class="s2">&quot;LogKeyword&quot;</span><span class="p">,</span>
+            <span class="nt">&quot;position&quot;</span><span class="p">:</span> <span class="mi">1</span>
+        <span class="p">}</span>
+    <span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>If the filter registration was successful, the server will respond on the same websocket with your broadcaster_id.
+The websocket will start streaming the filtered transactions and log events.</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="nt">&quot;broadcaster_id&quot;</span><span class="p">:</span> <span class="s2">&quot;2b90ec6e-716f-4cae-a7b6-6800424607da&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>If the filter registration was unsuccessful, the server will respond on the same websocket with an error.</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="nt">&quot;error&quot;</span><span class="p">:</span> <span class="s2">&quot;failed to register&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="nt">&quot;broadcaster_id&quot;</span><span class="p">:</span> <span class="s2">&quot;2b90ec6e-716f-4cae-a7b6-6800424607da&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>If the filter registration was unsuccessful, the server will respond on the same websocket with an error.</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="nt">&quot;error&quot;</span><span class="p">:</span> <span class="s2">&quot;failed to register&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="kafka">
+<h3>Kafka<a class="headerlink" href="#kafka" title="Permalink to this headline">¶</a></h3>
+<p>Filtered events are produced to the output topic (default: <em>outputs</em>).
+Messages are keyed with the <em>to_address</em> associated with the event, and have any associated <em>broadcaster_id</em> included for filtering.
+Messages that are time-sensitive should be consumed directly from the output topic and sent for further processing, as there may be additional delays/connectivity issues associated with websockets.</p>
+</div>
+<div class="section" id="unregistering-events">
+<h3>Unregistering Events<a class="headerlink" href="#unregistering-events" title="Permalink to this headline">¶</a></h3>
+<p>Events can be easily unregistered by sending a POST request to the appropriate <em>/unregister</em> endpoint with the same object that was used to register, except now including the associated ID.
+Events that were registered by a broadcaster must be removed by modifying the broadcaster event or by unregistering the broadcaster.</p>
+</div>
+</div>
+<div class="section" id="historical-data">
+<h2>Historical Data<a class="headerlink" href="#historical-data" title="Permalink to this headline">¶</a></h2>
+<p>Accessing historical icon blockchain data is made easy through the REST GraphQL APIs.</p>
+<div class="section" id="rest-api">
+<h3>REST API<a class="headerlink" href="#rest-api" title="Permalink to this headline">¶</a></h3>
+<p>The REST API can be accessed through curl commands (or any other http client)</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>curl -X GET <span class="s2">&quot;http://localhost/api/v1/blocks/?skip=0&amp;limit=1&quot;</span> -H  <span class="s2">&quot;accept: application/json&quot;</span>
+</pre></div>
+</div>
+<blockquote>
+<div><p>All endpoints that return arrays have a <code class="docutils literal notranslate"><span class="pre">skip</span></code> and <code class="docutils literal notranslate"><span class="pre">limit</span></code> parameter</p>
+</div></blockquote>
+<p>| Path | Description | Response Type |
+|——|————-|—————|
+| /api/v1/blocks | <code class="docutils literal notranslate"><span class="pre">GET</span></code> latest blocks | array |
+| /api/v1/blocks/height/{height} | <code class="docutils literal notranslate"><span class="pre">GET</span></code> block by height | object |
+| /api/v1/blocks/hash/{hash} | <code class="docutils literal notranslate"><span class="pre">GET</span></code> block by hash | object |
+| /api/v1/tx/hash/{hash} | <code class="docutils literal notranslate"><span class="pre">GET</span></code> transaction by hash | object |
+| /api/v1/tx/address/{address} | <code class="docutils literal notranslate"><span class="pre">GET</span></code> transaction by from address | array |
+| /api/v1/tx/block | <code class="docutils literal notranslate"><span class="pre">GET</span></code> transactions in the latest blocks | array |
+| /api/v1/tx/block/{height} | <code class="docutils literal notranslate"><span class="pre">GET</span></code> transactions by block height | array |
+| /api/v1/events/tx/{hash} | <code class="docutils literal notranslate"><span class="pre">GET</span></code> event logs by from_address | array |
+| /api/v1/events/block | <code class="docutils literal notranslate"><span class="pre">GET</span></code> event logs in the latest blocks | array |
+| /api/v1/events/block/{height} | <code class="docutils literal notranslate"><span class="pre">GET</span></code> event logs by block height | array |</p>
+<p>The github repository for the REST API can be found <a class="reference external" href="https://github.com/geometry-labs/icon-rest-api">here</a>.</p>
+</div>
+<div class="section" id="graphql-api">
+<h3>Graphql API<a class="headerlink" href="#graphql-api" title="Permalink to this headline">¶</a></h3>
+<p>The Graphql API can be accessed through the Graphql Playground located at <code class="docutils literal notranslate"><span class="pre">/graph/</span></code> (or any other graphql client)</p>
+<p>Example Graphql query made to <code class="docutils literal notranslate"><span class="pre">/graph/query</span></code>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">query</span> <span class="n">Block</span> <span class="p">{</span>
+  <span class="n">block</span><span class="p">(</span><span class="nb">hash</span><span class="p">:</span> <span class="s2">&quot;202d264fb85603ab19f747a60c0cf1aac53b6a15d9567ce7c8bd5e015c023296&quot;</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nb">hash</span><span class="p">,</span>
+    <span class="n">number</span><span class="p">,</span>
+    <span class="n">transaction_count</span><span class="p">,</span>
+    <span class="n">peer_id</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>The github repository for the Graphql API can be found <a class="reference external" href="https://github.com/geometry-labs/icon-graphql-api">here</a>.</p>
+<div class="section" id="schemas">
+<h4>Schemas<a class="headerlink" href="#schemas" title="Permalink to this headline">¶</a></h4>
+<p>Blocks:
+| Field | Type | Parameter |
+|——|————-|———|
+| hash | String | True |
+| number | Int | False |
+| signature | String | False |
+| item_id | String | False |
+| transaction_count | Int | False |
+| type | String | False |
+| version | String | False |
+| peer_id | String | False |
+| merkle_root_hash | String | False |
+| item_timestamp | String | False |
+| parent_hash | String | False |
+| timestamp | Int | False |</p>
+<p>Transactions:
+| Field | Type | Filterable |
+|——|————-|———|
+| hash | String | True |
+| signature | String | False |
+| fee | Int | False |
+| block_number | Int | False |
+| transaction_index | Int | False |
+| type | String | False |
+| receipt_step_price | Int | False |
+| from_address | String | False |
+| value | Int | False |
+| timestamp | String | False |
+| receipt_status | Int | False |
+| item_id | String | False |
+| receipt_logs | String | False |
+| block_hash | String | False |
+| to_address | String | False |
+| version | String | False |
+| nonce | Int | False |
+| receipt_cumulative_step_used | Int | False |
+| receipt_score_address | String | False |
+| data_type | String | False |
+| item_timestamp | String | False |</p>
+<p>Logs:
+| Field | Type | Filterable |
+|——|————-|———|
+| transaction_hash| String | True |
+| address| String | False |
+| data| [String] | False |
+| indexed| [String] | False |
+| item_id| String | False |
+| block_timestamp| Int | False |
+| block_number| Int | False |
+| block_hash| String | False |
+| transaction_index| Int | False |
+| type| String | False |
+| item_timestamp| String | False |</p>
+</div>
+</div>
+</div>
+<div class="section" id="websocket-data-streaming">
+<h2>Websocket Data Streaming<a class="headerlink" href="#websocket-data-streaming" title="Permalink to this headline">¶</a></h2>
+<p>Blockchain data can be streamed via a websocket connection. Just open up a websocket connection to one of three endpoints to start streaming</p>
+<p>The github repository for the Websocket API can be found <a class="reference external" href="https://github.com/geometry-labs/kafka-websocket-server">here</a>.</p>
+<p>/ws/blocks</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="nt">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;block&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;number&quot;</span><span class="p">:</span> <span class="mi">31248024</span><span class="p">,</span>
+  <span class="nt">&quot;hash&quot;</span><span class="p">:</span> <span class="s2">&quot;8abec43285d347c943ef287ab1677338e058b7b6f31eb6039464d94a51a584ed&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;parent_hash&quot;</span><span class="p">:</span> <span class="s2">&quot;7233045d2e84ea1a1694dd9a22ba34508ec1ca6c9fc8569f3c6570794c2ae0dd&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;merkle_root_hash&quot;</span><span class="p">:</span> <span class="s2">&quot;a4484c1a6a3d06a2eaf9abfeaeb8f5e39dba1f8d9ff3ed82790f4a885da5c043&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;timestamp&quot;</span><span class="p">:</span> <span class="mi">1614666626727336</span><span class="p">,</span>
+  <span class="nt">&quot;version&quot;</span><span class="p">:</span> <span class="s2">&quot;0.5&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;transaction_count&quot;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
+  <span class="nt">&quot;peer_id&quot;</span><span class="p">:</span> <span class="s2">&quot;hx81719dcfe8f58ca07044b7bede49cecd61f9bd3f&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;signature&quot;</span><span class="p">:</span> <span class="s2">&quot;FHrmre9ijL7H+/N9F/cf4buxZHVgoH7e32iVzvxL7Lc8Ps8NWBiEAjnt2+n+FyHZJ9Ub7b+tZwCU10EHauuFBgE=&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;next_leader&quot;</span><span class="p">:</span> <span class="s2">&quot;hx81719dcfe8f58ca07044b7bede49cecd61f9bd3f&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;item_id&quot;</span><span class="p">:</span> <span class="s2">&quot;block_8abec43285d347c943ef287ab1677338e058b7b6f31eb6039464d94a51a584ed&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;item_timestamp&quot;</span><span class="p">:</span> <span class="s2">&quot;2021-03-02T06:30:26Z&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>/ws/transactions</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="nt">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;transaction&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;version&quot;</span><span class="p">:</span> <span class="s2">&quot;0x3&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;from_address&quot;</span><span class="p">:</span> <span class="kc">null</span><span class="p">,</span>
+  <span class="nt">&quot;to_address&quot;</span><span class="p">:</span> <span class="kc">null</span><span class="p">,</span>
+  <span class="nt">&quot;value&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+  <span class="nt">&quot;step_limit&quot;</span><span class="p">:</span> <span class="kc">null</span><span class="p">,</span>
+  <span class="nt">&quot;timestamp&quot;</span><span class="p">:</span> <span class="s2">&quot;0x5bc87e2eb1bbf&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;block_timestamp&quot;</span><span class="p">:</span> <span class="mi">1614666697219007</span><span class="p">,</span>
+  <span class="nt">&quot;nid&quot;</span><span class="p">:</span> <span class="kc">null</span><span class="p">,</span>
+  <span class="nt">&quot;nonce&quot;</span><span class="p">:</span> <span class="kc">null</span><span class="p">,</span>
+  <span class="nt">&quot;hash&quot;</span><span class="p">:</span> <span class="s2">&quot;0xf93fff92e4ed528cf47d54e570e196ac0baf93700ed4ab8d4f270759946304b6&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;transaction_index&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+  <span class="nt">&quot;block_hash&quot;</span><span class="p">:</span> <span class="s2">&quot;e7d7343a5eb509e8513308ec1c384f054ebb6071292f8af182bf17b03a559b4d&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;block_number&quot;</span><span class="p">:</span> <span class="mi">31248059</span><span class="p">,</span>
+  <span class="nt">&quot;fee&quot;</span><span class="p">:</span> <span class="kc">null</span><span class="p">,</span>
+  <span class="nt">&quot;signature&quot;</span><span class="p">:</span> <span class="kc">null</span><span class="p">,</span>
+  <span class="nt">&quot;data_type&quot;</span><span class="p">:</span> <span class="s2">&quot;base&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;data&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nt">&quot;prep&quot;</span><span class="p">:</span> <span class="p">{</span>
+      <span class="nt">&quot;irep&quot;</span><span class="p">:</span> <span class="s2">&quot;0x21e19e0c9bab2400000&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;rrep&quot;</span><span class="p">:</span> <span class="s2">&quot;0x181&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;totalDelegation&quot;</span><span class="p">:</span> <span class="s2">&quot;0x1214a2763e44ace3832b64a&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;value&quot;</span><span class="p">:</span> <span class="s2">&quot;0x2a93c85453d83fb3&quot;</span>
+    <span class="p">},</span>
+    <span class="nt">&quot;result&quot;</span><span class="p">:</span> <span class="p">{</span>
+      <span class="nt">&quot;coveredByFee&quot;</span><span class="p">:</span> <span class="s2">&quot;0x0&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;coveredByOverIssuedICX&quot;</span><span class="p">:</span> <span class="s2">&quot;0x0&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;issue&quot;</span><span class="p">:</span> <span class="s2">&quot;0x2a93c85453d83fb3&quot;</span>
+    <span class="p">}</span>
+  <span class="p">},</span>
+  <span class="nt">&quot;receipt_cumulative_step_used&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+  <span class="nt">&quot;receipt_step_used&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+  <span class="nt">&quot;receipt_step_price&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+  <span class="nt">&quot;receipt_score_address&quot;</span><span class="p">:</span> <span class="kc">null</span><span class="p">,</span>
+  <span class="nt">&quot;receipt_logs&quot;</span><span class="p">:</span> <span class="kc">null</span><span class="p">,</span>
+  <span class="nt">&quot;receipt_status&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+  <span class="nt">&quot;item_id&quot;</span><span class="p">:</span> <span class="s2">&quot;transaction_0xf93fff92e4ed528cf47d54e570e196ac0baf93700ed4ab8d4f270759946304b6&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;item_timestamp&quot;</span><span class="p">:</span> <span class="s2">&quot;2021-03-02T06:31:37Z&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>/ws/logs</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="nt">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;log&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;log_index&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+  <span class="nt">&quot;transaction_hash&quot;</span><span class="p">:</span> <span class="s2">&quot;0x6426cb215a5125cdeebe80a0922d4fd51b906d543133f6d66f8c7530c83c63c8&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;transaction_index&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+  <span class="nt">&quot;address&quot;</span><span class="p">:</span> <span class="s2">&quot;cx0000000000000000000000000000000000000000&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;data&quot;</span><span class="p">:</span> <span class="p">[</span>
+    <span class="s2">&quot;0x21e19e0c9bab2400000&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;0x181&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;0x1214a2763e44ace3832b64a&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;0x2a93c85453d83fb3&quot;</span>
+  <span class="p">],</span>
+  <span class="nt">&quot;indexed&quot;</span><span class="p">:</span> <span class="p">[</span>
+    <span class="s2">&quot;PRepIssued(int,int,int,int)&quot;</span>
+  <span class="p">],</span>
+  <span class="nt">&quot;block_number&quot;</span><span class="p">:</span> <span class="mi">31248075</span><span class="p">,</span>
+  <span class="nt">&quot;block_timestamp&quot;</span><span class="p">:</span> <span class="mi">1614666729418470</span><span class="p">,</span>
+  <span class="nt">&quot;block_hash&quot;</span><span class="p">:</span> <span class="s2">&quot;2337742853924bbbe6e53210d1186d380ad2db2b71e77108481aa82135762963&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;item_id&quot;</span><span class="p">:</span> <span class="s2">&quot;log_0x6426cb215a5125cdeebe80a0922d4fd51b906d543133f6d66f8c7530c83c63c8_0&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;item_timestamp&quot;</span><span class="p">:</span> <span class="s2">&quot;2021-03-02T06:32:09Z&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="rest-api.html" class="btn btn-neutral float-left" title="REST API OpenAPI Docs" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2021, Geometry Labs, Inc..
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

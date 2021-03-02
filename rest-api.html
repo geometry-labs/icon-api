@@ -1,0 +1,450 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>REST API OpenAPI Docs &mdash; icon-api  documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Using ICON API" href="TUTORIAL.html" />
+    <link rel="prev" title="Overview" href="README.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> icon-api
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Readme:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="README.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="README.html#endpoints">Endpoints</a></li>
+<li class="toctree-l1"><a class="reference internal" href="README.html#containers">Containers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="README.html#requirements">Requirements</a></li>
+<li class="toctree-l1"><a class="reference internal" href="README.html#usage">Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="README.html#development">Development</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">REST API OpenAPI Docs</a><ul class="simple">
+</ul>
+</li>
+</ul>
+<p class="caption"><span class="caption-text">Tutorial:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="TUTORIAL.html">Using ICON API</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">icon-api</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>REST API OpenAPI Docs</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="_sources/rest-api.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="rest-api-openapi-docs">
+<h1>REST API OpenAPI Docs<a class="headerlink" href="#rest-api-openapi-docs" title="Permalink to this headline">¶</a></h1>
+<div class="toctree-wrapper compound">
+</div>
+<dl class="http get">
+<dt id="get--api-v1-blocks-">
+<code class="sig-name descname"><span class="pre">GET</span> </code><code class="sig-name descname"><span class="pre">/api/v1/blocks/</span></code><a class="headerlink" href="#get--api-v1-blocks-" title="Permalink to this definition">¶</a></dt>
+<dd><p><strong>Get Block Latest</strong></p>
+<p>Get latest block</p>
+<dl class="field-list simple">
+<dt class="field-odd">Query Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>skip</strong> (<em>integer</em>) – </p></li>
+<li><p><strong>limit</strong> (<em>integer</em>) – </p></li>
+</ul>
+</dd>
+<dt class="field-even">Status Codes</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.2.1">200 OK</a> – Successful Response</p></li>
+<li><p><a class="reference external" href="http://tools.ietf.org/html/rfc4918#section-11.2">422 Unprocessable Entity</a> – Validation Error</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="http get">
+<dt id="get--api-v1-blocks-height-height">
+<code class="sig-name descname"><span class="pre">GET</span> </code><code class="sig-name descname"><span class="pre">/api/v1/blocks/height/{height}</span></code><a class="headerlink" href="#get--api-v1-blocks-height-height" title="Permalink to this definition">¶</a></dt>
+<dd><p><strong>Get Block By Height</strong></p>
+<p>Get block by height.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>height</strong> (<em>integer</em>) – </p></li>
+</ul>
+</dd>
+<dt class="field-even">Status Codes</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.2.1">200 OK</a> – Successful Response</p></li>
+<li><p><a class="reference external" href="http://tools.ietf.org/html/rfc4918#section-11.2">422 Unprocessable Entity</a> – Validation Error</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="http get">
+<dt id="get--api-v1-blocks-hash-hash">
+<code class="sig-name descname"><span class="pre">GET</span> </code><code class="sig-name descname"><span class="pre">/api/v1/blocks/hash/{hash}</span></code><a class="headerlink" href="#get--api-v1-blocks-hash-hash" title="Permalink to this definition">¶</a></dt>
+<dd><p><strong>Get Block By Hash</strong></p>
+<p>Get block by hash.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>hash</strong> (<em>string</em>) – </p></li>
+</ul>
+</dd>
+<dt class="field-even">Status Codes</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.2.1">200 OK</a> – Successful Response</p></li>
+<li><p><a class="reference external" href="http://tools.ietf.org/html/rfc4918#section-11.2">422 Unprocessable Entity</a> – Validation Error</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="http get">
+<dt id="get--api-v1-tx-hash-hash">
+<code class="sig-name descname"><span class="pre">GET</span> </code><code class="sig-name descname"><span class="pre">/api/v1/tx/hash/{hash}</span></code><a class="headerlink" href="#get--api-v1-tx-hash-hash" title="Permalink to this definition">¶</a></dt>
+<dd><p><strong>Get Tx By Hash</strong></p>
+<p>Get transaction by hash</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>hash</strong> (<em>string</em>) – </p></li>
+</ul>
+</dd>
+<dt class="field-even">Status Codes</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.2.1">200 OK</a> – Successful Response</p></li>
+<li><p><a class="reference external" href="http://tools.ietf.org/html/rfc4918#section-11.2">422 Unprocessable Entity</a> – Validation Error</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="http get">
+<dt id="get--api-v1-tx-address-address">
+<code class="sig-name descname"><span class="pre">GET</span> </code><code class="sig-name descname"><span class="pre">/api/v1/tx/address/{address}</span></code><a class="headerlink" href="#get--api-v1-tx-address-address" title="Permalink to this definition">¶</a></dt>
+<dd><p><strong>Get Txs By Address</strong></p>
+<p>Get transaction by address</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>address</strong> (<em>string</em>) – </p></li>
+</ul>
+</dd>
+<dt class="field-even">Query Parameters</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>skip</strong> (<em>integer</em>) – </p></li>
+<li><p><strong>limit</strong> (<em>integer</em>) – </p></li>
+</ul>
+</dd>
+<dt class="field-odd">Status Codes</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.2.1">200 OK</a> – Successful Response</p></li>
+<li><p><a class="reference external" href="http://tools.ietf.org/html/rfc4918#section-11.2">422 Unprocessable Entity</a> – Validation Error</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="http get">
+<dt id="get--api-v1-tx-block">
+<code class="sig-name descname"><span class="pre">GET</span> </code><code class="sig-name descname"><span class="pre">/api/v1/tx/block</span></code><a class="headerlink" href="#get--api-v1-tx-block" title="Permalink to this definition">¶</a></dt>
+<dd><p><strong>Get Txs Latest Block</strong></p>
+<p>Get transactions in latest block</p>
+<dl class="field-list simple">
+<dt class="field-odd">Query Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>skip</strong> (<em>integer</em>) – </p></li>
+<li><p><strong>limit</strong> (<em>integer</em>) – </p></li>
+</ul>
+</dd>
+<dt class="field-even">Status Codes</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.2.1">200 OK</a> – Successful Response</p></li>
+<li><p><a class="reference external" href="http://tools.ietf.org/html/rfc4918#section-11.2">422 Unprocessable Entity</a> – Validation Error</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="http get">
+<dt id="get--api-v1-tx-block-height">
+<code class="sig-name descname"><span class="pre">GET</span> </code><code class="sig-name descname"><span class="pre">/api/v1/tx/block/{height}</span></code><a class="headerlink" href="#get--api-v1-tx-block-height" title="Permalink to this definition">¶</a></dt>
+<dd><p><strong>Get Txs By Height</strong></p>
+<p>Get transactions by block height</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>height</strong> (<em>integer</em>) – </p></li>
+</ul>
+</dd>
+<dt class="field-even">Query Parameters</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>skip</strong> (<em>integer</em>) – </p></li>
+<li><p><strong>limit</strong> (<em>integer</em>) – </p></li>
+</ul>
+</dd>
+<dt class="field-odd">Status Codes</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.2.1">200 OK</a> – Successful Response</p></li>
+<li><p><a class="reference external" href="http://tools.ietf.org/html/rfc4918#section-11.2">422 Unprocessable Entity</a> – Validation Error</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="http get">
+<dt id="get--api-v1-events-tx-hash">
+<code class="sig-name descname"><span class="pre">GET</span> </code><code class="sig-name descname"><span class="pre">/api/v1/events/tx/{hash}</span></code><a class="headerlink" href="#get--api-v1-events-tx-hash" title="Permalink to this definition">¶</a></dt>
+<dd><p><strong>Get Events By Tx</strong></p>
+<p>Get event by transaction</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>hash</strong> (<em>string</em>) – </p></li>
+</ul>
+</dd>
+<dt class="field-even">Query Parameters</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>skip</strong> (<em>integer</em>) – </p></li>
+<li><p><strong>limit</strong> (<em>integer</em>) – </p></li>
+</ul>
+</dd>
+<dt class="field-odd">Status Codes</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.2.1">200 OK</a> – Successful Response</p></li>
+<li><p><a class="reference external" href="http://tools.ietf.org/html/rfc4918#section-11.2">422 Unprocessable Entity</a> – Validation Error</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="http get">
+<dt id="get--api-v1-events-block">
+<code class="sig-name descname"><span class="pre">GET</span> </code><code class="sig-name descname"><span class="pre">/api/v1/events/block</span></code><a class="headerlink" href="#get--api-v1-events-block" title="Permalink to this definition">¶</a></dt>
+<dd><p><strong>Get Events Latest Block</strong></p>
+<p>Get events in latest block</p>
+<dl class="field-list simple">
+<dt class="field-odd">Query Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>skip</strong> (<em>integer</em>) – </p></li>
+<li><p><strong>limit</strong> (<em>integer</em>) – </p></li>
+</ul>
+</dd>
+<dt class="field-even">Status Codes</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.2.1">200 OK</a> – Successful Response</p></li>
+<li><p><a class="reference external" href="http://tools.ietf.org/html/rfc4918#section-11.2">422 Unprocessable Entity</a> – Validation Error</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="http get">
+<dt id="get--api-v1-events-block-height">
+<code class="sig-name descname"><span class="pre">GET</span> </code><code class="sig-name descname"><span class="pre">/api/v1/events/block/{height}</span></code><a class="headerlink" href="#get--api-v1-events-block-height" title="Permalink to this definition">¶</a></dt>
+<dd><p><strong>Get Events By Height</strong></p>
+<p>Get events by block height</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>height</strong> (<em>integer</em>) – </p></li>
+</ul>
+</dd>
+<dt class="field-even">Query Parameters</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>skip</strong> (<em>integer</em>) – </p></li>
+<li><p><strong>limit</strong> (<em>integer</em>) – </p></li>
+</ul>
+</dd>
+<dt class="field-odd">Status Codes</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.2.1">200 OK</a> – Successful Response</p></li>
+<li><p><a class="reference external" href="http://tools.ietf.org/html/rfc4918#section-11.2">422 Unprocessable Entity</a> – Validation Error</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="TUTORIAL.html" class="btn btn-neutral float-right" title="Using ICON API" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="README.html" class="btn btn-neutral float-left" title="Overview" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2021, Geometry Labs, Inc..
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
