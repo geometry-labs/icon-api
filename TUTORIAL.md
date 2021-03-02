@@ -160,6 +160,11 @@ Filtered events are produced to the output topic (default: _outputs_).
 Messages are keyed with the _to_address_ associated with the event, and have any associated _broadcaster_id_ included for filtering.
 Messages that are time-sensitive should be consumed directly from the output topic and sent for further processing, as there may be additional delays/connectivity issues associated with websockets.
 
+#### Unregistering Events
+
+Events can be easily unregistered by sending a POST request to the appropriate _/unregister_ endpoint with the same object that was used to register, except now including the associated ID.
+Events that were registered by a broadcaster must be removed by modifying the broadcaster event or by unregistering the broadcaster.
+
 ### Historical Data
 
 Accessing historical icon blockchain data is made easy through the REST GraphQL APIs.
@@ -262,9 +267,3 @@ Logs:
 | transaction_index| Int | False |
 | type| String | False |
 | item_timestamp| String | False |
-
-
-### Unregistering Events
-
-Events can be easily unregistered by sending a POST request to the appropriate _/unregister_ endpoint with the same object that was used to register, except now including the associated ID.
-Events that were registered by a broadcaster must be removed by modifying the broadcaster event or by unregistering the broadcaster.
