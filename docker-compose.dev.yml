@@ -6,23 +6,37 @@ services:
       context: etl
       target: prod
 
-  filter-registration:
+  registration:
     build:
-      context: filter-registration
+      context: filter/registration
       target: prod
 
-  filter-worker:
+  filter-worker-contract:
     build:
-      context: filter-worker
+      context: filter/worker
+      target: prod
+
+  filter-worker-transaction:
+    build:
+      context: filter/worker
       target: prod
 
   rest-api:
     build:
-      context: rest-api
+      context: rest
+      target: prod
+
+  icon-graphql-api:
+    build:
+      context: graphql
       target: prod
 
   kafka-websocket-server:
     build:
-      context: kafka-websocket-server
+      context: websockets/websocket
       target: prod
-  
+
+  icon-registration-websocket-server:
+    build:
+      context: websockets/registration-websocket
+      target: prod
