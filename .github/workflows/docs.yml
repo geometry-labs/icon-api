@@ -54,9 +54,7 @@ jobs:
           curl localhost/api/v1/admin/docs/openapi.json > docs/openapi.registration.json
 
       - name: make the docs
-        run: |
-          cd docs && make html
-          touch ./docs/_build/html/.nojekyll
+        run: cd docs && make html && touch docs/_build/html/.nojekyll
 
       - name: github pages deploy
         uses: peaceiris/actions-gh-pages@v2.3.1
