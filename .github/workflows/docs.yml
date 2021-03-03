@@ -13,18 +13,35 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-  
+
       - name: Setup Python
         uses: actions/setup-python@v2
         with:
           python-version: '3.x'
+
+      - name: Cache pip
+        uses: actions/cache@v2
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-${{ hashFiles('requirements_dev.txt') }}
+          restore-keys: |
+            ${{ runner.os }}-pip-
+            ${{ runner.os }}-
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip setuptools wheel
+          python -m pip install -r docs/requirements.txt
+
+      - name: Clone repos
+        run: tackle . --context-file repos.yaml --no-input
 
       - name: Set up Docker Buildx
         id: buildx
         uses: docker/setup-buildx-action@v1
 
       - name: Build the stack
-        run: docker-compose -f docker-compose.yml up -d
+        run: docker-compose -f docker-compose.yml -f docker-compose.unit.yml up -d
 
       - name: Wait to stabilize and check running containers
         run: |
