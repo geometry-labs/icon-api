@@ -97,9 +97,18 @@
 <p class="caption"><span class="caption-text">Tutorial:</span></p>
 <ul class="current">
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Using ICON API</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#pre-requisites-for-tutorial">Pre-Requisites for Tutorial</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#deploying">Deploying</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#registering-events">Registering events</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#getting-ready">Getting Ready</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#deploying">Deploying</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#run-locally-with-docker">Run locally with Docker</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#deploy-with-terraform">Deploy with Terraform</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#interacting-with-the-api">Interacting with the API</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#rest-api">REST API</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#websocket-connection">Websocket connection</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#manually-registering-events">Manually registering events</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#transactions">Transactions</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#log-events">Log Events</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#broadcaster">Broadcaster</a></li>
@@ -108,18 +117,21 @@
 <li class="toctree-l2"><a class="reference internal" href="#receiving-events">Receiving events</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#websockets">Websockets</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#kafka">Kafka</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#unregistering-events">Unregistering Events</a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="#unregistering-events">Unregistering Events</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#historical-data">Historical Data</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#rest-api">REST API</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#graphql-api">Graphql API</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#schemas">Schemas</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id1">REST API</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#graphql-api">Graphql API</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#schemas">Schemas</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#blocks">Blocks:</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id2">Transactions:</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#logs">Logs:</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="#websocket-data-streaming">Websocket Data Streaming</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#live-data-over-websockets">Live data over websockets</a></li>
 </ul>
 </li>
 </ul>
@@ -191,14 +203,17 @@
             
   <div class="section" id="using-icon-api">
 <h1>Using ICON API<a class="headerlink" href="#using-icon-api" title="Permalink to this headline">¶</a></h1>
-<p>In this tutorial we will walk through the various elements of deploying and using the icon-api stack. You can run the stack locally or use the provided terraform module to deploy a node on AWS. From there, we will go over how to access the individual enpoints using Websockets, REST, and GraphQL.</p>
-<div class="section" id="pre-requisites-for-tutorial">
-<h2>Pre-Requisites for Tutorial<a class="headerlink" href="#pre-requisites-for-tutorial" title="Permalink to this headline">¶</a></h2>
+<p>In this tutorial we will walk through the various elements of deploying and using the icon-api stack.
+You can run the stack locally or use the provided terraform module to deploy a node on AWS.
+From there, we will go over how to access the individual endpoints using Websockets, REST, and GraphQL.</p>
+<div class="section" id="getting-ready">
+<h2>Getting Ready<a class="headerlink" href="#getting-ready" title="Permalink to this headline">¶</a></h2>
+<p>For this tutorial, you will need to install:</p>
 <ul class="simple">
-<li><p>curl</p></li>
-<li><p>…</p></li>
+<li><p>curl (for the REST API section)</p></li>
+<li><p>A websocket client such as <a class="reference external" href="https://chrome.google.com/webstore/detail/simple-websocket-client/pfdhoblngboilpfeibdedpjgfnlcodoo">Simple Websocket Client</a> for Chrome</p></li>
 </ul>
-<p>For Deploying with Terraform</p>
+<p>To deploy with terraform, you will need:</p>
 <ul class="simple">
 <li><p>terraform</p></li>
 <li><p>ansible</p></li>
@@ -206,23 +221,60 @@
 </div>
 <div class="section" id="deploying">
 <h2>Deploying<a class="headerlink" href="#deploying" title="Permalink to this headline">¶</a></h2>
-<p>The stack can be deployed on your own machine with docker-compose or via Terraform on AWS. It can be run to sync up the backend from any given blockheight which, if you are running from genesis, will require up to 300 GB of disk space.  If running from the current blockheight (icon-etl flag <code class="docutils literal notranslate"><span class="pre">--start-at-head&quot;,</span> <span class="pre">&quot;${START_AT_HEAD:-true}</span></code> per the docker-compose.yml), then you you will need to allocate about 2 GB per week that you intend on running the node.</p>
-<p>To deploy with Terraform, navigate to <a class="reference external" href="https://github.com/geometry-labs/terraform-icon-aws-api-ec2">github.com/geometry-labs/terraform-icon-aws-api-ec2</a>. From there you can navigate to the examples/defaults and edit parameters based on the README values. Some values like key locations can be persisted in a <code class="docutils literal notranslate"><span class="pre">terraform.tfvars</span></code> per it’s <a class="reference external" href="https://github.com/geometry-labs/terraform-icon-aws-api-ec2/blob/main/examples/defaults/terraform.tfvars.example">example</a>.  You will need local ssh keys (ie ssh-keygen) and the deployment will require paths to both the public and private keys. To run the deployment, run <code class="docutils literal notranslate"><span class="pre">terraform</span> <span class="pre">init</span> <span class="pre">&amp;&amp;</span> <span class="pre">terraform</span> <span class="pre">apply</span></code>.  You will then be asked to fill in the paths to the ssh keys unless you setup the terraform.tfvars file.</p>
-<p>Once the node is deployed, ssh into it and start the application manually just as you would if you were running the stack locally. There is also an option to run with SSL but that is out of scope of this tutorial.</p>
+<p>The stack can be deployed on your own machine with docker-compose or via Terraform on AWS.
+It can be run to sync up the backend from any given block height which, if you are running from genesis, will require up to 300 GB of disk space.
+If running from the current block height (icon-etl flag <code class="docutils literal notranslate"><span class="pre">--start-at-head&quot;,</span> <span class="pre">&quot;${START_AT_HEAD:-true}</span></code> per the docker-compose.yml), then you will need to allocate about 2 GB per week that you intend on running the node.</p>
+<div class="section" id="run-locally-with-docker">
+<h3>Run locally with Docker<a class="headerlink" href="#run-locally-with-docker" title="Permalink to this headline">¶</a></h3>
+<p>To run the stack locally with Docker, clone this repo, navigate to the folder and run <code class="docutils literal notranslate"><span class="pre">docker-compose</span> <span class="pre">up</span> <span class="pre">-d</span></code>.</p>
 </div>
-<div class="section" id="registering-events">
-<h2>Registering events<a class="headerlink" href="#registering-events" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="deploy-with-terraform">
+<h3>Deploy with Terraform<a class="headerlink" href="#deploy-with-terraform" title="Permalink to this headline">¶</a></h3>
+<p>To deploy with Terraform, navigate to <a class="reference external" href="https://github.com/geometry-labs/terraform-icon-aws-api-ec2">github.com/geometry-labs/terraform-icon-aws-api-ec2</a>. From there you can navigate to the examples/defaults and edit parameters based on the README values. Some values like key locations can be persisted in a <code class="docutils literal notranslate"><span class="pre">terraform.tfvars</span></code> per it’s <a class="reference external" href="https://github.com/geometry-labs/terraform-icon-aws-api-ec2/blob/main/examples/defaults/terraform.tfvars.example">example</a>.  You will need local ssh keys (ie ssh-keygen) and the deployment will require paths to both the public and private keys. To run the deployment, run <code class="docutils literal notranslate"><span class="pre">terraform</span> <span class="pre">init</span> <span class="pre">&amp;&amp;</span> <span class="pre">terraform</span> <span class="pre">apply</span></code>.  You will then be asked to fill in the paths to the ssh keys unless you setup the terraform.tfvars file.</p>
+<p>Once the node is deployed, ssh into it and start the application manually just as you would if you were running the stack locally.
+There is also an option to run with SSL but that is out of scope of this tutorial.</p>
+</div>
+</div>
+<div class="section" id="interacting-with-the-api">
+<h2>Interacting with the API<a class="headerlink" href="#interacting-with-the-api" title="Permalink to this headline">¶</a></h2>
+<p>There are two main methods that you can use to interact with the API: via the <a class="reference external" href="#rest-api">REST API</a> and over a <a class="reference external" href="#websocket-connection">websocket connection</a>.</p>
+<div class="section" id="rest-api">
+<h3>REST API<a class="headerlink" href="#rest-api" title="Permalink to this headline">¶</a></h3>
+<p>Each part of the REST API section, you will need to use curl (or something similar) to send your requests.</p>
+<p>To make a GET request, you will use a curl command similar to</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>curl http://localhost/api/v1/
+</pre></div>
+</div>
+<p>To make a POST request, you will need a few extra parameters, similar to</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>curl -X POST -d <span class="s1">&#39;{&quot;parameter&quot;: &quot;value&quot;}&#39;</span> http://localhost/api/v1/
+</pre></div>
+</div>
+<p>Here, you will need to replace the <code class="docutils literal notranslate"><span class="pre">'{&quot;parameter&quot;:</span> <span class="pre">&quot;value&quot;}'</span></code> with the appropriate data.</p>
+</div>
+<div class="section" id="websocket-connection">
+<h3>Websocket connection<a class="headerlink" href="#websocket-connection" title="Permalink to this headline">¶</a></h3>
+<p>If you are using the Chrome Simple Websocket Connection client, when you’ve opened the client, you’ll see a window like this:</p>
+<p><img alt="websocket-example" src="docs/assets/websocket.png" /></p>
+<p>In the URL field, enter <code class="docutils literal notranslate"><span class="pre">ws://localhost/ws/admin</span></code> and click open.
+Now, you should be able to input your request into the request box.
+You will then see the submitted request in the message log window along with any incoming data.</p>
+</div>
+</div>
+<div class="section" id="manually-registering-events">
+<h2>Manually registering events<a class="headerlink" href="#manually-registering-events" title="Permalink to this headline">¶</a></h2>
 <p>There are three types of objects you can register to the ICON API:</p>
 <ul class="simple">
 <li><p>Transactions</p></li>
 <li><p>Log events</p></li>
 <li><p>Broadcasters</p></li>
 </ul>
+<p>Generally, the only time you will need to manually register an event is when you are processing events directly from Kafka.
+If you just want to stream events from the stack, it is recommended that you proceed to the section on <a class="reference external" href="#receiving-events">receiving events over websockets</a>.</p>
 <div class="section" id="transactions">
 <h3>Transactions<a class="headerlink" href="#transactions" title="Permalink to this headline">¶</a></h3>
 <p>Transactions can be filtered based on the to or from addresses.
 To register a new transaction event, make a POST request to the <em>/transaction/register</em> endpoint.
-The payload should be in the form of:</p>
+The submitted data should be in the form of:</p>
 <div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
     <span class="nt">&quot;to_address&quot;</span><span class="p">:</span> <span class="s2">&quot;cx0000000000000000000000000000000000000000&quot;</span><span class="p">,</span>
     <span class="nt">&quot;from_address&quot;</span><span class="p">:</span> <span class="s2">&quot;cx0000000000000000000000000000000000000001&quot;</span>
@@ -237,7 +289,7 @@ If you want to register multiple related objects, submit them as a broadcaster o
 <h3>Log Events<a class="headerlink" href="#log-events" title="Permalink to this headline">¶</a></h3>
 <p>Log events are combinations of contract addresses, log output keywords, and log output positions.
 To register a new log event, make a POST request to the <em>/logevent/register</em> endpoint.
-The payload should be in the form of:</p>
+The data should be in the form of:</p>
 <div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
     <span class="nt">&quot;address&quot;</span><span class="p">:</span> <span class="s2">&quot;cx0000000000000000000000000000000000000001&quot;</span><span class="p">,</span>
     <span class="nt">&quot;keyword&quot;</span><span class="p">:</span> <span class="s2">&quot;LogKeyword&quot;</span><span class="p">,</span>
@@ -245,7 +297,8 @@ The payload should be in the form of:</p>
 <span class="p">}</span>
 </pre></div>
 </div>
-<p>Log events are extracted from the block log and are reformatted and output to the output topic for further consumption.</p>
+<p>These fields correspond to the SCORE address of the contract you wish to receive events about, the keyword from the log output indicating the function name of interest, and the output argument position (1/2/3).
+Log events are extracted from the block log and are reformatted and output to the output topic for further consumption.</p>
 </div>
 <div class="section" id="broadcaster">
 <h3>Broadcaster<a class="headerlink" href="#broadcaster" title="Permalink to this headline">¶</a></h3>
@@ -255,7 +308,7 @@ Normally these do not need to be manually registered, as the websocket server wi
 The payload should be in the form of:</p>
 <div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
     <span class="nt">&quot;connection_type&quot;</span><span class="p">:</span> <span class="s2">&quot;ws&quot;</span><span class="p">,</span>
-    <span class="nt">&quot;endpoint&quot;</span><span class="p">:</span> <span class="s2">&quot;wss://test&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;endpoint&quot;</span><span class="p">:</span> <span class="s2">&quot;ws://test&quot;</span><span class="p">,</span>
     <span class="nt">&quot;event_ids&quot;</span><span class="p">:</span> <span class="p">[</span>
       <span class="s2">&quot;1234-1234-1234&quot;</span>
     <span class="p">],</span>
@@ -282,12 +335,12 @@ The payload should be in the form of:</p>
 <h2>Receiving events<a class="headerlink" href="#receiving-events" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="websockets">
 <h3>Websockets<a class="headerlink" href="#websockets" title="Permalink to this headline">¶</a></h3>
-<p>In order to recieve filtered transactions and log events through a websocket, open a websocket connection on <em>/ws/admin</em>.
+<p>In order to receive filtered transactions and log events through a websocket, open a websocket connection on <em>/ws/admin</em>.
 Once successfully connected, send your filter settings through the same websocket connection.
-The payload should ne in the form of:</p>
+The payload should be in the form of:</p>
 <div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
     <span class="nt">&quot;connection_type&quot;</span><span class="p">:</span> <span class="s2">&quot;ws&quot;</span><span class="p">,</span>
-    <span class="nt">&quot;endpoint&quot;</span><span class="p">:</span> <span class="s2">&quot;wss://test&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;endpoint&quot;</span><span class="p">:</span> <span class="s2">&quot;ws://test&quot;</span><span class="p">,</span>
     <span class="nt">&quot;event_ids&quot;</span><span class="p">:</span> <span class="p">[</span>
       <span class="s2">&quot;1234-1234-1234&quot;</span>
     <span class="p">],</span>
@@ -338,17 +391,17 @@ The websocket will start streaming the filtered transactions and log events.</p>
 Messages are keyed with the <em>to_address</em> associated with the event, and have any associated <em>broadcaster_id</em> included for filtering.
 Messages that are time-sensitive should be consumed directly from the output topic and sent for further processing, as there may be additional delays/connectivity issues associated with websockets.</p>
 </div>
+</div>
 <div class="section" id="unregistering-events">
-<h3>Unregistering Events<a class="headerlink" href="#unregistering-events" title="Permalink to this headline">¶</a></h3>
+<h2>Unregistering Events<a class="headerlink" href="#unregistering-events" title="Permalink to this headline">¶</a></h2>
 <p>Events can be easily unregistered by sending a POST request to the appropriate <em>/unregister</em> endpoint with the same object that was used to register, except now including the associated ID.
 Events that were registered by a broadcaster must be removed by modifying the broadcaster event or by unregistering the broadcaster.</p>
-</div>
 </div>
 <div class="section" id="historical-data">
 <h2>Historical Data<a class="headerlink" href="#historical-data" title="Permalink to this headline">¶</a></h2>
 <p>Accessing historical icon blockchain data is made easy through the REST GraphQL APIs.</p>
-<div class="section" id="rest-api">
-<h3>REST API<a class="headerlink" href="#rest-api" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id1">
+<h3>REST API<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
 <p>The REST API can be accessed through curl commands (or any other http client)</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>curl -X GET <span class="s2">&quot;http://localhost/api/v1/blocks/?skip=0&amp;limit=1&quot;</span> -H  <span class="s2">&quot;accept: application/json&quot;</span>
 </pre></div>
@@ -385,9 +438,11 @@ Events that were registered by a broadcaster must be removed by modifying the br
 </pre></div>
 </div>
 <p>The github repository for the Graphql API can be found <a class="reference external" href="https://github.com/geometry-labs/icon-graphql-api">here</a>.</p>
+</div>
 <div class="section" id="schemas">
-<h4>Schemas<a class="headerlink" href="#schemas" title="Permalink to this headline">¶</a></h4>
-<p>Blocks:</p>
+<h3>Schemas<a class="headerlink" href="#schemas" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="blocks">
+<h4>Blocks:<a class="headerlink" href="#blocks" title="Permalink to this headline">¶</a></h4>
 <p>| Field | Type | Parameter |
 |——|————-|———|
 | hash | String | True |
@@ -402,7 +457,9 @@ Events that were registered by a broadcaster must be removed by modifying the br
 | item_timestamp | String | False |
 | parent_hash | String | False |
 | timestamp | Int | False |</p>
-<p>Transactions:</p>
+</div>
+<div class="section" id="id2">
+<h4>Transactions:<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h4>
 <p>| Field | Type | Filterable |
 |——|————-|———|
 | hash | String | True |
@@ -426,28 +483,31 @@ Events that were registered by a broadcaster must be removed by modifying the br
 | receipt_score_address | String | False |
 | data_type | String | False |
 | item_timestamp | String | False |</p>
-<p>Logs:</p>
+</div>
+<div class="section" id="logs">
+<h4>Logs:<a class="headerlink" href="#logs" title="Permalink to this headline">¶</a></h4>
 <p>| Field | Type | Filterable |
 |——|————-|———|
-| transaction_hash| String | True |
-| address| String | False |
-| data| [String] | False |
-| indexed| [String] | False |
-| item_id| String | False |
-| block_timestamp| Int | False |
-| block_number| Int | False |
-| block_hash| String | False |
-| transaction_index| Int | False |
-| type| String | False |
-| item_timestamp| String | False |</p>
+| transaction_hash | String | True |
+| address | String | False |
+| data | String | False |
+| indexed | String | False |
+| item_id | String | False |
+| block_timestamp | Int | False |
+| block_number | Int | False |
+| block_hash | String | False |
+| transaction_index | Int | False |
+| type | String | False |
+| item_timestamp | String | False |</p>
 </div>
 </div>
 </div>
-<div class="section" id="websocket-data-streaming">
-<h2>Websocket Data Streaming<a class="headerlink" href="#websocket-data-streaming" title="Permalink to this headline">¶</a></h2>
-<p>Blockchain data can be streamed via a websocket connection. Just open up a websocket connection to one of three endpoints to start streaming</p>
+<div class="section" id="live-data-over-websockets">
+<h2>Live data over websockets<a class="headerlink" href="#live-data-over-websockets" title="Permalink to this headline">¶</a></h2>
+<p>Blockchain data can be streamed via a websocket connection.
+Just open up a websocket connection to one of three endpoints to start streaming.</p>
 <p>The github repository for the Websocket API can be found <a class="reference external" href="https://github.com/geometry-labs/kafka-websocket-server">here</a>.</p>
-<p>/ws/blocks</p>
+<p><code class="docutils literal notranslate"><span class="pre">/ws/blocks</span></code></p>
 <div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
   <span class="nt">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;block&quot;</span><span class="p">,</span>
   <span class="nt">&quot;number&quot;</span><span class="p">:</span> <span class="mi">31248024</span><span class="p">,</span>
@@ -465,7 +525,7 @@ Events that were registered by a broadcaster must be removed by modifying the br
 <span class="p">}</span>
 </pre></div>
 </div>
-<p>/ws/transactions</p>
+<p><code class="docutils literal notranslate"><span class="pre">/ws/transactions</span></code></p>
 <div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
   <span class="nt">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;transaction&quot;</span><span class="p">,</span>
   <span class="nt">&quot;version&quot;</span><span class="p">:</span> <span class="s2">&quot;0x3&quot;</span><span class="p">,</span>
@@ -508,7 +568,7 @@ Events that were registered by a broadcaster must be removed by modifying the br
 <span class="p">}</span>
 </pre></div>
 </div>
-<p>/ws/logs</p>
+<p><code class="docutils literal notranslate"><span class="pre">/ws/logs</span></code></p>
 <div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
   <span class="nt">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;log&quot;</span><span class="p">,</span>
   <span class="nt">&quot;log_index&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
