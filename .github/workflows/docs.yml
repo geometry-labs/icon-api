@@ -1,10 +1,10 @@
-name: Push / PR unit
+name: Rebuild docs
 
 on:
   push:
     branches:
       - main
-      - tutorial
+      - fix-docs
 
 jobs:
   build:
@@ -13,7 +13,7 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-  
+
       - name: Setup Python
         uses: actions/setup-python@v2
         with:
@@ -23,7 +23,7 @@ jobs:
         uses: actions/cache@v2
         with:
           path: ~/.cache/pip
-          key: ${{ runner.os }}-pip-${{ hashFiles('requirements_dev.txt') }}
+          key: ${{ runner.os }}-pip-${{ hashFiles('requirements.txt') }}
           restore-keys: |
             ${{ runner.os }}-pip-
             ${{ runner.os }}-
@@ -54,7 +54,7 @@ jobs:
           curl localhost/api/v1/admin/docs/openapi.json > docs/openapi.registration.json
 
       - name: make the docs
-        run: cd docs && make html
+        run: cd docs && make html && touch _build/html/.nojekyll
 
       - name: github pages deploy
         uses: peaceiris/actions-gh-pages@v2.3.1
