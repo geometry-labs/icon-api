@@ -6,6 +6,8 @@
     <br />
 </p>
 
+### Overview 
+
 Includes containers to run an event based architecture on Kafka with websockets, REST, and GraphQl API endpoints for blocks, transactions, and event logs.  Includes a REST API to register filtered events and broadcast them to a configurable set of middleware similar to [eventeum](https://github.com/eventeum/eventeum). 
 
 The stack is modular and can be adopted in whole or in part by disabling various services in the stack.  Each process relies on [icon-etl](https://github.com/blockchain-etl/icon-etl) to stream data into Kafka from which APIs are built on top of.  For historical queries, data is moved by means of Kafka Connect into MongoDB from which REST and GraphQL endpoints are exposed.
@@ -20,7 +22,7 @@ For websockets, data is streamed directly from kafka.  The services are deployed
 
 ### Containers
 
-| Name | Description |
+| Name | Description | 
 | :--- | :---------- |
 | [etl](https://github.com/geometry-labs/icon-etl) | Icon etl to scan the blockchain and pipe data to kafka brokers |
 | [registration](https://github.com/geometry-labs/icon-filter-registration) | Rest api to register contracts and transactions to track |

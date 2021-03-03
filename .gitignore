@@ -8,10 +8,15 @@ rest-api
 websockets/kafka-websocket-server
 websockets/registration-websocket-server
 terraform/terraform-icon-aws-api-ec2
+docs/_build
 
 # In case use local volumes
 postgres
 mongodb
+
+# Docs
+docs/openapi.rest.json
+docs/openapi.registration.json
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

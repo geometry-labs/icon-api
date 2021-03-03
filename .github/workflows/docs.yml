@@ -1,0 +1,64 @@
+name: Push / PR unit
+
+on:
+  push:
+    branches:
+      - main
+      - tutorial
+
+jobs:
+  build:
+    name: Push Sphinx Pages
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+  
+      - name: Setup Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.x'
+
+      - name: Cache pip
+        uses: actions/cache@v2
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-${{ hashFiles('requirements_dev.txt') }}
+          restore-keys: |
+            ${{ runner.os }}-pip-
+            ${{ runner.os }}-
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip setuptools wheel
+          python -m pip install -r docs/requirements.txt
+
+      - name: Clone repos
+        run: tackle . --context-file repos.yaml --no-input
+
+      - name: Set up Docker Buildx
+        id: buildx
+        uses: docker/setup-buildx-action@v1
+
+      - name: Build the stack
+        run: docker-compose -f docker-compose.yml -f docker-compose.unit.yml up -d
+
+      - name: Wait to stabilize and check running containers
+        run: |
+          sleep 120
+          docker-compose -f docker-compose.yml -f docker-compose.unit.yml ps
+
+      - name: Generate new openapi specs
+        run: |
+          curl localhost/api/v1/openapi.json > docs/openapi.rest.json
+          curl localhost/api/v1/admin/docs/openapi.json > docs/openapi.registration.json
+
+      - name: make the docs
+        run: cd docs && make html
+
+      - name: github pages deploy
+        uses: peaceiris/actions-gh-pages@v2.3.1
+        env:
+          PERSONAL_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PUBLISH_BRANCH: gh-pages
+          PUBLISH_DIR: docs/_build/html
