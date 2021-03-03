@@ -56,7 +56,7 @@ jobs:
       - name: make the docs
         run: |
           cd docs && make html
-          touch docs/_build/html/.nojekyll
+          touch ./docs/_build/html/.nojekyll
 
       - name: github pages deploy
         uses: peaceiris/actions-gh-pages@v2.3.1
