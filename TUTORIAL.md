@@ -1,36 +1,84 @@
 # Using ICON API
 
-In this tutorial we will walk through the various elements of deploying and using the icon-api stack. You can run the stack locally or use the provided terraform module to deploy a node on AWS. From there, we will go over how to access the individual enpoints using Websockets, REST, and GraphQL. 
+In this tutorial we will walk through the various elements of deploying and using the icon-api stack.
+You can run the stack locally or use the provided terraform module to deploy a node on AWS.
+From there, we will go over how to access the individual endpoints using Websockets, REST, and GraphQL. 
 
-### Pre-Requisites for Tutorial 
+## Getting Ready
 
-- curl 
-- ...
+For this tutorial, you will need to install:
 
-For Deploying with Terraform 
+- curl (for the REST API section)
+- A websocket client such as [Simple Websocket Client](https://chrome.google.com/webstore/detail/simple-websocket-client/pfdhoblngboilpfeibdedpjgfnlcodoo) for Chrome
+
+To deploy with terraform, you will need:
+
 - terraform 
 - ansible 
 
-### Deploying
+## Deploying
 
-The stack can be deployed on your own machine with docker-compose or via Terraform on AWS. It can be run to sync up the backend from any given blockheight which, if you are running from genesis, will require up to 300 GB of disk space.  If running from the current blockheight (icon-etl flag `--start-at-head", "${START_AT_HEAD:-true}` per the docker-compose.yml), then you you will need to allocate about 2 GB per week that you intend on running the node. 
+The stack can be deployed on your own machine with docker-compose or via Terraform on AWS.
+It can be run to sync up the backend from any given block height which, if you are running from genesis, will require up to 300 GB of disk space.
+If running from the current block height (icon-etl flag `--start-at-head", "${START_AT_HEAD:-true}` per the docker-compose.yml), then you will need to allocate about 2 GB per week that you intend on running the node. 
+
+### Run locally with Docker
+To run the stack locally with Docker, clone this repo, navigate to the folder and run `docker-compose up -d`.
+
+### Deploy with Terraform
 
 To deploy with Terraform, navigate to [github.com/geometry-labs/terraform-icon-aws-api-ec2](https://github.com/geometry-labs/terraform-icon-aws-api-ec2). From there you can navigate to the examples/defaults and edit parameters based on the README values. Some values like key locations can be persisted in a `terraform.tfvars` per it's [example](https://github.com/geometry-labs/terraform-icon-aws-api-ec2/blob/main/examples/defaults/terraform.tfvars.example).  You will need local ssh keys (ie ssh-keygen) and the deployment will require paths to both the public and private keys. To run the deployment, run `terraform init && terraform apply`.  You will then be asked to fill in the paths to the ssh keys unless you setup the terraform.tfvars file. 
 
-Once the node is deployed, ssh into it and start the application manually just as you would if you were running the stack locally. There is also an option to run with SSL but that is out of scope of this tutorial. 
+Once the node is deployed, ssh into it and start the application manually just as you would if you were running the stack locally.
+There is also an option to run with SSL but that is out of scope of this tutorial. 
 
-### Registering events
+## Interacting with the API
+
+There are two main methods that you can use to interact with the API: via the [REST API](#rest-api) and over a [websocket connection](#websocket-connection).
+
+### REST API
+
+Each part of the REST API section, you will need to use curl (or something similar) to send your requests.
+
+To make a GET request, you will use a curl command similar to
+
+```bash
+curl http://localhost/api/v1/
+```
+
+To make a POST request, you will need a few extra parameters, similar to
+
+```bash
+curl -X POST -d '{"parameter": "value"}' http://localhost/api/v1/
+```
+
+Here, you will need to replace the `'{"parameter": "value"}'` with the appropriate data.
+
+### Websocket connection
+
+If you are using the Chrome Simple Websocket Connection client, when you've opened the client, you'll see a window like this:
+
+![websocket-example](docs/assets/websocket.png)
+
+In the URL field, enter `ws://localhost/ws/admin` and click open.
+Now, you should be able to input your request into the request box.
+You will then see the submitted request in the message log window along with any incoming data.
+
+## Manually registering events
 
 There are three types of objects you can register to the ICON API:
 * Transactions
 * Log events
 * Broadcasters
 
-#### Transactions
+Generally, the only time you will need to manually register an event is when you are processing events directly from Kafka.
+If you just want to stream events from the stack, it is recommended that you proceed to the section on [receiving events over websockets](#receiving-events).
+
+### Transactions
 
 Transactions can be filtered based on the to or from addresses.
 To register a new transaction event, make a POST request to the _/transaction/register_ endpoint.
-The payload should be in the form of:
+The submitted data should be in the form of:
 
 ```json
 {
@@ -44,11 +92,11 @@ If you want to register multiple related objects, submit them as a broadcaster o
 
 Filtered transactions will be output directly to the output topic for further consumption.
 
-#### Log Events
+### Log Events
 
 Log events are combinations of contract addresses, log output keywords, and log output positions.
 To register a new log event, make a POST request to the _/logevent/register_ endpoint.
-The payload should be in the form of:
+The data should be in the form of:
 
 ```json
 {
@@ -57,10 +105,10 @@ The payload should be in the form of:
     "position": 1
 }
 ```
-
+These fields correspond to the SCORE address of the contract you wish to receive events about, the keyword from the log output indicating the function name of interest, and the output argument position (1/2/3). 
 Log events are extracted from the block log and are reformatted and output to the output topic for further consumption.
 
-#### Broadcaster
+### Broadcaster
 
 Broadcasters are sets of associated transaction and log events.
 Normally these do not need to be manually registered, as the websocket server will take care of this step.
@@ -71,7 +119,7 @@ The payload should be in the form of:
 ```json
 {
     "connection_type": "ws",
-    "endpoint": "wss://test",
+    "endpoint": "ws://test",
     "event_ids": [
       "1234-1234-1234"
     ],
@@ -93,17 +141,17 @@ The payload should be in the form of:
 
 All associated events, once registered, will output to the output topic and will have the broadcaster_id associated with the message key for output filtering.
 
-### Receiving events
-#### Websockets
+## Receiving events
+### Websockets
 
-In order to recieve filtered transactions and log events through a websocket, open a websocket connection on _/ws/admin_.
+In order to receive filtered transactions and log events through a websocket, open a websocket connection on _/ws/admin_.
 Once successfully connected, send your filter settings through the same websocket connection.
-The payload should ne in the form of:
+The payload should be in the form of:
 
 ```json
 {
     "connection_type": "ws",
-    "endpoint": "wss://test",
+    "endpoint": "ws://test",
     "event_ids": [
       "1234-1234-1234"
     ],
@@ -154,22 +202,22 @@ If the filter registration was unsuccessful, the server will respond on the same
 }
 ```
 
-#### Kafka
+### Kafka
 
 Filtered events are produced to the output topic (default: _outputs_).
 Messages are keyed with the _to_address_ associated with the event, and have any associated _broadcaster_id_ included for filtering.
 Messages that are time-sensitive should be consumed directly from the output topic and sent for further processing, as there may be additional delays/connectivity issues associated with websockets.
 
-#### Unregistering Events
+## Unregistering Events
 
 Events can be easily unregistered by sending a POST request to the appropriate _/unregister_ endpoint with the same object that was used to register, except now including the associated ID.
 Events that were registered by a broadcaster must be removed by modifying the broadcaster event or by unregistering the broadcaster.
 
-### Historical Data
+## Historical Data
 
 Accessing historical icon blockchain data is made easy through the REST GraphQL APIs.
 
-#### REST API
+### REST API
 
 The REST API can be accessed through curl commands (or any other http client)
 
@@ -194,7 +242,7 @@ curl -X GET "http://localhost/api/v1/blocks/?skip=0&limit=1" -H  "accept: applic
 
 The github repository for the REST API can be found [here](https://github.com/geometry-labs/icon-rest-api).
 
-#### Graphql API
+### Graphql API
 
 The Graphql API can be accessed through the Graphql Playground located at `/graph/` (or any other graphql client)
 
@@ -212,9 +260,9 @@ query Block {
 
 The github repository for the Graphql API can be found [here](https://github.com/geometry-labs/icon-graphql-api).
 
-##### Schemas
+### Schemas
 
-Blocks:
+#### Blocks:
 
 | Field | Type | Parameter |
 |------|-------------|---------|
@@ -231,7 +279,7 @@ Blocks:
 | parent_hash | String | False |
 | timestamp | Int | False |
 
-Transactions:
+#### Transactions:
 
 | Field | Type | Filterable |
 |------|-------------|---------|
@@ -257,29 +305,30 @@ Transactions:
 | data_type | String | False |
 | item_timestamp | String | False |
 
-Logs:
+#### Logs:
 
 | Field | Type | Filterable |
 |------|-------------|---------|
-| transaction_hash| String | True |
-| address| String | False |
-| data| [String] | False |
-| indexed| [String] | False |
-| item_id| String | False |
-| block_timestamp| Int | False |
-| block_number| Int | False |
-| block_hash| String | False |
-| transaction_index| Int | False |
-| type| String | False |
-| item_timestamp| String | False |
+| transaction_hash | String | True |
+| address | String | False |
+| data | String | False |
+| indexed | String | False |
+| item_id | String | False |
+| block_timestamp | Int | False |
+| block_number | Int | False |
+| block_hash | String | False |
+| transaction_index | Int | False |
+| type | String | False |
+| item_timestamp | String | False |
 
-### Websocket Data Streaming
+## Live data over websockets
 
-Blockchain data can be streamed via a websocket connection. Just open up a websocket connection to one of three endpoints to start streaming
+Blockchain data can be streamed via a websocket connection.
+Just open up a websocket connection to one of three endpoints to start streaming.
 
 The github repository for the Websocket API can be found [here](https://github.com/geometry-labs/kafka-websocket-server).
 
-/ws/blocks
+`/ws/blocks`
 ```json
 {
   "type": "block",
@@ -298,7 +347,7 @@ The github repository for the Websocket API can be found [here](https://github.c
 }
 ```
 
-/ws/transactions
+`/ws/transactions`
 ```json
 {
   "type": "transaction",
@@ -342,7 +391,7 @@ The github repository for the Websocket API can be found [here](https://github.c
 }
 ```
 
-/ws/logs
+`/ws/logs`
 ```json
 {
   "type": "log",
