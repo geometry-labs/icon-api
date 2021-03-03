@@ -51,7 +51,7 @@ jobs:
       - name: Generate new openapi specs
         run: |
           curl localhost/api/v1/openapi.json > docs/openapi.rest.json
-          curl localhost/api/v1/admin/openapi.json > docs/openapi.registration.json
+          curl localhost/api/v1/admin/docs/openapi.json > docs/openapi.registration.json
 
       - name: make the docs
         run: cd docs && make html
