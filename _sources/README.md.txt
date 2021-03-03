@@ -13,6 +13,7 @@ Includes containers to run an event based architecture on Kafka with websockets,
 The stack is modular and can be adopted in whole or in part by disabling various services in the stack.  Each process relies on [icon-etl](https://github.com/blockchain-etl/icon-etl) to stream data into Kafka from which APIs are built on top of.  For historical queries, data is moved by means of Kafka Connect into MongoDB from which REST and GraphQL endpoints are exposed.
 For websockets, data is streamed directly from kafka.  The services are deployed with docker-compose and exposed over a [Traefik](https://doc.traefik.io/traefik/) reverse proxy.  
 
+Documentation is available [here](https://geometry-labs.github.io/icon-api/).
 
 ### Endpoints 
 | Name | Endpoint Prefix |  Docs | 
