@@ -1,5 +1,5 @@
-Event Registration REST API OpenAPI Docs
-========================================
+Event Registration REST API Docs
+================================
 
 .. toctree::
    :maxdepth: 2

@@ -1,5 +1,5 @@
-REST API OpenAPI Docs
-=====================
+REST API Docs
+=============
 
 .. toctree::
    :maxdepth: 2
