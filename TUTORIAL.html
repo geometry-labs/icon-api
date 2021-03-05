@@ -409,19 +409,67 @@ Events that were registered by a broadcaster must be removed by modifying the br
 <blockquote>
 <div><p>All endpoints that return arrays have a <code class="docutils literal notranslate"><span class="pre">skip</span></code> and <code class="docutils literal notranslate"><span class="pre">limit</span></code> parameter</p>
 </div></blockquote>
-<p>| Path | Description | Response Type |
-|——|————-|—————|
-| /api/v1/blocks | <code class="docutils literal notranslate"><span class="pre">GET</span></code> latest blocks | array |
-| /api/v1/blocks/height/{height} | <code class="docutils literal notranslate"><span class="pre">GET</span></code> block by height | object |
-| /api/v1/blocks/hash/{hash} | <code class="docutils literal notranslate"><span class="pre">GET</span></code> block by hash | object |
-| /api/v1/tx/hash/{hash} | <code class="docutils literal notranslate"><span class="pre">GET</span></code> transaction by hash | object |
-| /api/v1/tx/address/{address} | <code class="docutils literal notranslate"><span class="pre">GET</span></code> transaction by from address | array |
-| /api/v1/tx/block | <code class="docutils literal notranslate"><span class="pre">GET</span></code> transactions in the latest blocks | array |
-| /api/v1/tx/block/{height} | <code class="docutils literal notranslate"><span class="pre">GET</span></code> transactions by block height | array |
-| /api/v1/events/tx/{hash} | <code class="docutils literal notranslate"><span class="pre">GET</span></code> event logs by from_address | array |
-| /api/v1/events/block | <code class="docutils literal notranslate"><span class="pre">GET</span></code> event logs in the latest blocks | array |
-| /api/v1/events/block/{height} | <code class="docutils literal notranslate"><span class="pre">GET</span></code> event logs by block height | array |</p>
-<p>The github repository for the REST API can be found <a class="reference external" href="https://github.com/geometry-labs/icon-rest-api">here</a>.</p>
+<table border="1" class="docutils">
+<thead>
+<tr>
+<th>Path</th>
+<th>Description</th>
+<th>Response Type</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>/api/v1/blocks</td>
+<td><code>GET</code> latest blocks</td>
+<td>array</td>
+</tr>
+<tr>
+<td>/api/v1/blocks/height/{height}</td>
+<td><code>GET</code> block by height</td>
+<td>object</td>
+</tr>
+<tr>
+<td>/api/v1/blocks/hash/{hash}</td>
+<td><code>GET</code> block by hash</td>
+<td>object</td>
+</tr>
+<tr>
+<td>/api/v1/tx/hash/{hash}</td>
+<td><code>GET</code> transaction by hash</td>
+<td>object</td>
+</tr>
+<tr>
+<td>/api/v1/tx/address/{address}</td>
+<td><code>GET</code> transaction by from address</td>
+<td>array</td>
+</tr>
+<tr>
+<td>/api/v1/tx/block</td>
+<td><code>GET</code> transactions in the latest blocks</td>
+<td>array</td>
+</tr>
+<tr>
+<td>/api/v1/tx/block/{height}</td>
+<td><code>GET</code> transactions by block height</td>
+<td>array</td>
+</tr>
+<tr>
+<td>/api/v1/events/tx/{hash}</td>
+<td><code>GET</code> event logs by from_address</td>
+<td>array</td>
+</tr>
+<tr>
+<td>/api/v1/events/block</td>
+<td><code>GET</code> event logs in the latest blocks</td>
+<td>array</td>
+</tr>
+<tr>
+<td>/api/v1/events/block/{height}</td>
+<td><code>GET</code> event logs by block height</td>
+<td>array</td>
+</tr>
+</tbody>
+</table><p>The github repository for the REST API can be found <a class="reference external" href="https://github.com/geometry-labs/icon-rest-api">here</a>.</p>
 </div>
 <div class="section" id="graphql-api">
 <h3>Graphql API<a class="headerlink" href="#graphql-api" title="Permalink to this headline">¶</a></h3>
@@ -443,63 +491,263 @@ Events that were registered by a broadcaster must be removed by modifying the br
 <h3>Schemas<a class="headerlink" href="#schemas" title="Permalink to this headline">¶</a></h3>
 <div class="section" id="blocks">
 <h4>Blocks:<a class="headerlink" href="#blocks" title="Permalink to this headline">¶</a></h4>
-<p>| Field | Type | Parameter |
-|——|————-|———|
-| hash | String | True |
-| number | Int | False |
-| signature | String | False |
-| item_id | String | False |
-| transaction_count | Int | False |
-| type | String | False |
-| version | String | False |
-| peer_id | String | False |
-| merkle_root_hash | String | False |
-| item_timestamp | String | False |
-| parent_hash | String | False |
-| timestamp | Int | False |</p>
-</div>
+<table border="1" class="docutils">
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Parameter</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>hash</td>
+<td>String</td>
+<td>True</td>
+</tr>
+<tr>
+<td>number</td>
+<td>Int</td>
+<td>False</td>
+</tr>
+<tr>
+<td>signature</td>
+<td>String</td>
+<td>False</td>
+</tr>
+<tr>
+<td>item_id</td>
+<td>String</td>
+<td>False</td>
+</tr>
+<tr>
+<td>transaction_count</td>
+<td>Int</td>
+<td>False</td>
+</tr>
+<tr>
+<td>type</td>
+<td>String</td>
+<td>False</td>
+</tr>
+<tr>
+<td>version</td>
+<td>String</td>
+<td>False</td>
+</tr>
+<tr>
+<td>peer_id</td>
+<td>String</td>
+<td>False</td>
+</tr>
+<tr>
+<td>merkle_root_hash</td>
+<td>String</td>
+<td>False</td>
+</tr>
+<tr>
+<td>item_timestamp</td>
+<td>String</td>
+<td>False</td>
+</tr>
+<tr>
+<td>parent_hash</td>
+<td>String</td>
+<td>False</td>
+</tr>
+<tr>
+<td>timestamp</td>
+<td>Int</td>
+<td>False</td>
+</tr>
+</tbody>
+</table></div>
 <div class="section" id="id2">
 <h4>Transactions:<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h4>
-<p>| Field | Type | Filterable |
-|——|————-|———|
-| hash | String | True |
-| signature | String | False |
-| fee | Int | False |
-| block_number | Int | False |
-| transaction_index | Int | False |
-| type | String | False |
-| receipt_step_price | Int | False |
-| from_address | String | False |
-| value | Int | False |
-| timestamp | String | False |
-| receipt_status | Int | False |
-| item_id | String | False |
-| receipt_logs | String | False |
-| block_hash | String | False |
-| to_address | String | False |
-| version | String | False |
-| nonce | Int | False |
-| receipt_cumulative_step_used | Int | False |
-| receipt_score_address | String | False |
-| data_type | String | False |
-| item_timestamp | String | False |</p>
-</div>
+<table border="1" class="docutils">
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Filterable</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>hash</td>
+<td>String</td>
+<td>True</td>
+</tr>
+<tr>
+<td>signature</td>
+<td>String</td>
+<td>False</td>
+</tr>
+<tr>
+<td>fee</td>
+<td>Int</td>
+<td>False</td>
+</tr>
+<tr>
+<td>block_number</td>
+<td>Int</td>
+<td>False</td>
+</tr>
+<tr>
+<td>transaction_index</td>
+<td>Int</td>
+<td>False</td>
+</tr>
+<tr>
+<td>type</td>
+<td>String</td>
+<td>False</td>
+</tr>
+<tr>
+<td>receipt_step_price</td>
+<td>Int</td>
+<td>False</td>
+</tr>
+<tr>
+<td>from_address</td>
+<td>String</td>
+<td>False</td>
+</tr>
+<tr>
+<td>value</td>
+<td>Int</td>
+<td>False</td>
+</tr>
+<tr>
+<td>timestamp</td>
+<td>String</td>
+<td>False</td>
+</tr>
+<tr>
+<td>receipt_status</td>
+<td>Int</td>
+<td>False</td>
+</tr>
+<tr>
+<td>item_id</td>
+<td>String</td>
+<td>False</td>
+</tr>
+<tr>
+<td>receipt_logs</td>
+<td>String</td>
+<td>False</td>
+</tr>
+<tr>
+<td>block_hash</td>
+<td>String</td>
+<td>False</td>
+</tr>
+<tr>
+<td>to_address</td>
+<td>String</td>
+<td>False</td>
+</tr>
+<tr>
+<td>version</td>
+<td>String</td>
+<td>False</td>
+</tr>
+<tr>
+<td>nonce</td>
+<td>Int</td>
+<td>False</td>
+</tr>
+<tr>
+<td>receipt_cumulative_step_used</td>
+<td>Int</td>
+<td>False</td>
+</tr>
+<tr>
+<td>receipt_score_address</td>
+<td>String</td>
+<td>False</td>
+</tr>
+<tr>
+<td>data_type</td>
+<td>String</td>
+<td>False</td>
+</tr>
+<tr>
+<td>item_timestamp</td>
+<td>String</td>
+<td>False</td>
+</tr>
+</tbody>
+</table></div>
 <div class="section" id="logs">
 <h4>Logs:<a class="headerlink" href="#logs" title="Permalink to this headline">¶</a></h4>
-<p>| Field | Type | Filterable |
-|——|————-|———|
-| transaction_hash | String | True |
-| address | String | False |
-| data | String | False |
-| indexed | String | False |
-| item_id | String | False |
-| block_timestamp | Int | False |
-| block_number | Int | False |
-| block_hash | String | False |
-| transaction_index | Int | False |
-| type | String | False |
-| item_timestamp | String | False |</p>
-</div>
+<table border="1" class="docutils">
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Filterable</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>transaction_hash</td>
+<td>String</td>
+<td>True</td>
+</tr>
+<tr>
+<td>address</td>
+<td>String</td>
+<td>False</td>
+</tr>
+<tr>
+<td>data</td>
+<td>String</td>
+<td>False</td>
+</tr>
+<tr>
+<td>indexed</td>
+<td>String</td>
+<td>False</td>
+</tr>
+<tr>
+<td>item_id</td>
+<td>String</td>
+<td>False</td>
+</tr>
+<tr>
+<td>block_timestamp</td>
+<td>Int</td>
+<td>False</td>
+</tr>
+<tr>
+<td>block_number</td>
+<td>Int</td>
+<td>False</td>
+</tr>
+<tr>
+<td>block_hash</td>
+<td>String</td>
+<td>False</td>
+</tr>
+<tr>
+<td>transaction_index</td>
+<td>Int</td>
+<td>False</td>
+</tr>
+<tr>
+<td>type</td>
+<td>String</td>
+<td>False</td>
+</tr>
+<tr>
+<td>item_timestamp</td>
+<td>String</td>
+<td>False</td>
+</tr>
+</tbody>
+</table></div>
 </div>
 </div>
 <div class="section" id="live-data-over-websockets">

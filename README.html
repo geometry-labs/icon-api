@@ -190,17 +190,48 @@ For websockets, data is streamed directly from kafka.  The services are deployed
 </div>
 <div class="section" id="containers">
 <h1>Containers<a class="headerlink" href="#containers" title="Permalink to this headline">¶</a></h1>
-<p>| Name | Description |
-| :— | :———- |
-| <a class="reference external" href="https://github.com/geometry-labs/icon-etl">etl</a> | Icon etl to scan the blockchain and pipe data to kafka brokers |
-| <a class="reference external" href="https://github.com/geometry-labs/icon-filter-registration">registration</a> | Rest api to register contracts and transactions to track |
-| <a class="reference external" href="https://github.com/geometry-labs/icon-kafka-worker">filter-worker-contract</a> | Filter worker for contracts |
-| <a class="reference external" href="https://github.com/geometry-labs/icon-kafka-worker">filter-worker-transaction</a> | Filter worker for transactions |
-| <a class="reference external" href="https://github.com/geometry-labs/icon-rest-api">rest-api</a> | Rest api to retrieve historical icon blockchain data |
-| <a class="reference external" href="https://github.com/geometry-labs/kafka-websocket-server">kafka-websocket-server</a> | Websocket server to stream live data for blocks, transactions, and contract logs |
-| <a class="reference external" href="https://github.com/geometry-labs/kafka-topics-init">kafka-topic-init</a> | Kafka topic initialization container, exit 0 after completion |
-| <a class="reference external" href="https://github.com/geometry-labs/kafka-connect-init">kafka-connect-init</a> | Kafka contract initialization container, exit 0 after completion |</p>
-</div>
+<table border="1" class="docutils">
+<thead>
+<tr>
+<th align="left">Name</th>
+<th align="left">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left"><a href="https://github.com/geometry-labs/icon-etl">etl</a></td>
+<td align="left">Icon etl to scan the blockchain and pipe data to kafka brokers</td>
+</tr>
+<tr>
+<td align="left"><a href="https://github.com/geometry-labs/icon-filter-registration">registration</a></td>
+<td align="left">Rest api to register contracts and transactions to track</td>
+</tr>
+<tr>
+<td align="left"><a href="https://github.com/geometry-labs/icon-kafka-worker">filter-worker-contract</a></td>
+<td align="left">Filter worker for contracts</td>
+</tr>
+<tr>
+<td align="left"><a href="https://github.com/geometry-labs/icon-kafka-worker">filter-worker-transaction</a></td>
+<td align="left">Filter worker for transactions</td>
+</tr>
+<tr>
+<td align="left"><a href="https://github.com/geometry-labs/icon-rest-api">rest-api</a></td>
+<td align="left">Rest api to retrieve historical icon blockchain data</td>
+</tr>
+<tr>
+<td align="left"><a href="https://github.com/geometry-labs/kafka-websocket-server">kafka-websocket-server</a></td>
+<td align="left">Websocket server to stream live data for blocks, transactions, and contract logs</td>
+</tr>
+<tr>
+<td align="left"><a href="https://github.com/geometry-labs/kafka-topics-init">kafka-topic-init</a></td>
+<td align="left">Kafka topic initialization container, exit 0 after completion</td>
+</tr>
+<tr>
+<td align="left"><a href="https://github.com/geometry-labs/kafka-connect-init">kafka-connect-init</a></td>
+<td align="left">Kafka contract initialization container, exit 0 after completion</td>
+</tr>
+</tbody>
+</table></div>
 <div class="section" id="requirements">
 <h1>Requirements<a class="headerlink" href="#requirements" title="Permalink to this headline">¶</a></h1>
 <p>Minimum:</p>
