@@ -11,6 +11,11 @@ Welcome to icon-api's documentation!
    :caption: Readme:
 
    README.md
+
+.. toctree::
+   :maxdepth: 2
+   :caption: API Docs:
+
    rest-api
    registration-rest-api
 
@@ -21,6 +26,20 @@ Welcome to icon-api's documentation!
 
    TUTORIAL.md
 
+
+Services
+========
+
+.. toctree::
+   :caption: icon-etl:
+
+   ICON ETL <etl-readme.md>
+   Filter Registration <filter-registration-readme.md>
+   Filter Worker <filter-worker-readme.md>
+   Registration Websocket <registration-websocket-readme.md>
+   Streaming Websocket <websocket-readme.md>
+   GraphQL Server <graphql-readme.md>
+   REST API <rest-api-readme.md>
 
 
 Indices and tables
