@@ -1,1 +1,1 @@
-/home/rob/go/src/github.com/geometry-labs/geometry/src/services/icon-api/rest-api/README.md
+../rest-api/README.md

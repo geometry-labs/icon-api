@@ -14,23 +14,24 @@ Welcome to icon-api's documentation!
 
 .. toctree::
    :maxdepth: 2
+   :caption: Tutorial:
+
+   TUTORIAL.md
+
+.. toctree::
+   :maxdepth: 2
    :caption: API Docs:
 
    rest-api
    registration-rest-api
 
 
-.. toctree::
-   :maxdepth: 2
-   :caption: Tutorial:
-
-   TUTORIAL.md
-
-
 Services
 ========
 
 .. toctree::
+   :glob:
+   :titlesonly:
    :caption: icon-etl:
 
    ICON ETL <etl-readme.md>

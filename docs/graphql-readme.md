@@ -1,1 +1,1 @@
-/home/rob/go/src/github.com/geometry-labs/geometry/src/services/icon-api/graphql/README.md
+../graphql/README.md

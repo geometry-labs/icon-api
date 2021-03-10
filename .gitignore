@@ -5,10 +5,12 @@ etl
 filter
 kafka
 rest-api
-websockets/kafka-websocket-server
-websockets/registration-websocket-server
+websockets
 terraform/terraform-icon-aws-api-ec2
 docs/_build
+graphql
+rest
+
 
 # In case use local volumes
 postgres

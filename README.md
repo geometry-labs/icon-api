@@ -54,6 +54,10 @@ To run the entire stack, simply run.
 docker-compose up -d
 ```
 
+The reverse proxy prefixes all endpoints to `api/v1` though all parameters of the stack can be overriden via environment variables within an `.env` file. 
+
+- [tutorial](https://geometry-labs.github.io/icon-api/TUTORIAL.html)
+
 ### Development 
 
 This repo is actually a meta-repo consisting of many sub-repos. To pull all the source code into the project, run:

@@ -53,6 +53,16 @@ jobs:
           curl localhost/api/v1/openapi.json > docs/openapi.rest.json
           curl localhost/api/v1/admin/docs/openapi.json > docs/openapi.registration.json
 
+      - name: Symlink subrepo readmes
+        run: |
+          ln -s ../rest-api/README.md rest-api-readme.md
+          ln -s ../etl/README.md etl-readme.md
+          ln -s ../filter/registration/README.md filter-registration-readme.md
+          ln -s ../filter/worker/README.md filter-worker-readme.md
+          ln -s ../websockets/registration-websocket/README.md registration-websocket-readme.md
+          ln -s ../websockets/websocket/README.md websocket-readme.md
+          ln -s ../graphql/README.md graphql-readme.md
+
       - name: make the docs
         run: cd docs && make html && touch _build/html/.nojekyll
 
