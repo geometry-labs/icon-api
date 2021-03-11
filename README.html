@@ -174,7 +174,7 @@
     <br />
 </p><div class="section" id="overview">
 <h1>Overview<a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h1>
-<p>Includes containers to run an event based architecture on Kafka with websockets, REST, and GraphQl API endpoints for blocks, transactions, and event logs.  Includes a REST API to register filtered events and broadcast them to a configurable set of middleware similar to <a class="reference external" href="https://github.com/eventeum/eventeum">eventeum</a>.</p>
+<p>Microservices stack to run an event based architecture for the ICON Blockchain. Based on Kafka with websockets, REST, and GraphQl API endpoints for blocks, transactions, and event logs.  Includes a REST API to register filtered events to either broadcast them to a configurable set of middleware similar to <a class="reference external" href="https://github.com/eventeum/eventeum">eventeum</a> or stream events over websockets.</p>
 <p>The stack is modular and can be adopted in whole or in part by disabling various services in the stack.  Each process relies on <a class="reference external" href="https://github.com/blockchain-etl/icon-etl">icon-etl</a> to stream data into Kafka from which APIs are built on top of.  For historical queries, data is moved by means of Kafka Connect into MongoDB from which REST and GraphQL endpoints are exposed.
 For websockets, data is streamed directly from kafka.  The services are deployed with docker-compose and exposed over a <a class="reference external" href="https://doc.traefik.io/traefik/">Traefik</a> reverse proxy.</p>
 <ul class="simple">
@@ -231,7 +231,8 @@ For websockets, data is streamed directly from kafka.  The services are deployed
 <td align="left">Kafka contract initialization container, exit 0 after completion</td>
 </tr>
 </tbody>
-</table></div>
+</table><p>To clone all dependencies into this repo, checkout the developer section for instructions.</p>
+</div>
 <div class="section" id="requirements">
 <h1>Requirements<a class="headerlink" href="#requirements" title="Permalink to this headline">¶</a></h1>
 <p>Minimum:</p>
