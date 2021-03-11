@@ -54,6 +54,9 @@ curl -X POST -d '{"parameter": "value"}' http://localhost/api/v1/
 
 Here, you will need to replace the `'{"parameter": "value"}'` with the appropriate data.
 
+**IMPORTANT**:
+If you are using a client that does not automatically follow redirects, you **MUST** either use a trailing slash at the end of the URL (http://localhost/api/v1/ and **NOT** http://localhost/api/v1), or enable redirect following (the `-L` option in curl).
+
 ### Websocket connection
 
 If you are using the Chrome Simple Websocket Connection client, when you've opened the client, you'll see a window like this:

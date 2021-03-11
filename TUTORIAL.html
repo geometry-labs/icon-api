@@ -250,6 +250,8 @@ There is also an option to run with SSL but that is out of scope of this tutoria
 </pre></div>
 </div>
 <p>Here, you will need to replace the <code class="docutils literal notranslate"><span class="pre">'{&quot;parameter&quot;:</span> <span class="pre">&quot;value&quot;}'</span></code> with the appropriate data.</p>
+<p><strong>IMPORTANT</strong>:
+If you are using a client that does not automatically follow redirects, you <strong>MUST</strong> either use a trailing slash at the end of the URL (http://localhost/api/v1/ and <strong>NOT</strong> http://localhost/api/v1), or enable redirect following (the <code class="docutils literal notranslate"><span class="pre">-L</span></code> option in curl).</p>
 </div>
 <div class="section" id="websocket-connection">
 <h3>Websocket connection<a class="headerlink" href="#websocket-connection" title="Permalink to this headline">¶</a></h3>
