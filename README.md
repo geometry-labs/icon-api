@@ -1,10 +1,6 @@
-<p align="center">
-  <h3 align="center">ICON API</h3>
+# icon-api 
 
-  <p align="center">
-    API microservice stack for the ICON Blockchain.
-    <br />
-</p>
+API microservice stack for the ICON Blockchain.
 
 ### Overview 
 
@@ -19,19 +15,24 @@ For websockets, data is streamed directly from kafka.  The services are deployed
 ### Endpoints 
 | Name | Endpoint Prefix |  Docs | 
 | :--- | :--- | :--- |  
-| REST API | /api/v1/ | /api/v1/docs |
-| Registration API | /api/v1/admin | /api/v1/admin/docs |
+| Websockets | /ws/[blocks/transactions/logs] | [docs](https://geometry-labs.github.io/icon-api/TUTORIAL.html#live-data-over-websockets) |
+| Event Registration Websocket | /ws/admin | [docs](https://geometry-labs.github.io/icon-api/TUTORIAL.html#receiving-events) | 
+| REST API | /api/v1/ | [/api/v1/docs](https://geometry-labs.github.io/icon-api/rest-api.html) |
+| Event Registration REST API | /api/v1/admin | [/api/v1/admin/docs](https://geometry-labs.github.io/icon-api/registration-rest-api.html) |
+| GraphQL | /graph/query | [docs](https://geometry-labs.github.io/icon-api/TUTORIAL.html#graphql-api) | 
 
 ### Containers
 
-| Name | Description | 
-| :--- | :---------- |
-| [etl](https://github.com/geometry-labs/icon-etl) | Icon etl to scan the blockchain and pipe data to kafka brokers |
-| [registration](https://github.com/geometry-labs/icon-filter-registration) | Rest api to register contracts and transactions to track |
-| [filter-worker-contract](https://github.com/geometry-labs/icon-kafka-worker) | Filter worker for contracts |
-| [filter-worker-transaction](https://github.com/geometry-labs/icon-kafka-worker) | Filter worker for transactions | 
-| [rest-api](https://github.com/geometry-labs/icon-rest-api) | Rest api to retrieve historical icon blockchain data |
-| [kafka-websocket-server](https://github.com/geometry-labs/kafka-websocket-server) | Websocket server to stream live data for blocks, transactions, and contract logs |
+| Name | Description |  
+| :--- | :---------- | 
+| [etl](https://github.com/geometry-labs/icon-etl) | Icon etl to scan the blockchain and pipe data to kafka brokers | 
+| [kafka-websocket-server](https://github.com/geometry-labs/kafka-websocket-server) | Websocket server to stream live data for blocks, transactions, and contract logs |  
+| [icon-registration-websocket-server](https://github.com/geometry-labs/icon-registration-websocket-server) | Websocket server register / stream filtered contract events | 
+| [registration](https://github.com/geometry-labs/icon-filter-registration) | Rest api to register contracts and transactions to track | 
+| [filter-worker-contract](https://github.com/geometry-labs/icon-kafka-worker) | Filter worker for contracts | 
+| [filter-worker-transaction](https://github.com/geometry-labs/icon-kafka-worker) | Filter worker for transactions |
+| [rest-api](https://github.com/geometry-labs/icon-rest-api) | REST API for querying historical data |
+| [icon-graphql-api](https://github.com/geometry-labs/icon-graphql-api) | GraphQL API for querying historical data |
 | [kafka-topic-init](https://github.com/geometry-labs/kafka-topics-init) | Kafka topic initialization container, exit 0 after completion |
 | [kafka-connect-init](https://github.com/geometry-labs/kafka-connect-init) | Kafka contract initialization container, exit 0 after completion |
 
